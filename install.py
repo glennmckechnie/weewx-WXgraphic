@@ -49,6 +49,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'skins/WXgraphic/license.txt',
                     'skins/WXgraphic/PHP_verify.php',
                     'skins/WXgraphic/README.txt',
+                    'skins/WXgraphic/index.php',
                     'skins/WXgraphic/wxgraphic.php',
                     'skins/WXgraphic/icons/day_clear.gif',
                     'skins/WXgraphic/icons/day_clear.jpeg',
