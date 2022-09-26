@@ -388,7 +388,7 @@ else {
      $vws_icon["FOG+?DRIZZLE"] = "./icons/" . "$daynight" . "_light_rain.$image_format";
      $vws_icon["PATCHY+DRIZZLE"] = "./icons/" . "$daynight" . "_light_rain.$image_format";
      $vws_icon["DRIZZLE"] = "./icons/" . "$daynight" . "_light_rain.$image_format";
-     $vws_icon["MIST"] = " ./icons/haze.$image_format";
+     $vws_icon["MIST"] = "./icons/haze.$image_format";
      $vws_icon["SMOKE"] = "./icons/haze.$image_format";
      $vws_icon["FROZEN PRECIP"] = "/icons/$daynight_snow.$image_format";
      $vws_icon["DRY"] = "./icons/" . "$daynight" . "_clear.$image_format";
