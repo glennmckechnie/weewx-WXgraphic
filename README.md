@@ -43,11 +43,11 @@ Currently, the icons are not available from this template. That may change.
 
    1. Fetch the archive
    
-      ```wget -O weewx-wxgraphic.zip https://github.com/glennmckechnie/weewx-wxgraphic/archive/master.zip```
+      ```wget -o weewx-WXgraphic-main.zip https://github.com/glennmckechnie/weewx-WXgraphic/archive/refs/heads/main.zip```
 
    2. Use wee_extension to install it
    
-      ```sudo wee_extension --install weewx-wxgraphic.zip```
+      ```sudo wee_extension --install=weewx-WXgraphic-main.zip```
 
    3. Restart weewx
 
