@@ -1,0 +1,395 @@
+<?php
+/********************************************/
+/** Weather graphic generator v6.3         **/                                            
+/**          User Configuration            **/
+/********************************************/
+
+/***** DATA FILE: defines the path to the data file. *****/
+// path can be absolute or relative. If you have issues try using the absolute
+// path.
+// THIS IS NOT A URL!!
+// if using WD clientraw.txt supply the path to it.
+$data_file_path  = '/your/path/to/data/file/'; 
+
+/***** IMAGE FORMAT: defines the image format *****/
+// The script supports 3 image formats: GIF, PNG, and JPEG
+// set $image_format for each as follows:
+// for GIF: $image_format = 'gif';
+// for PNG: $image_format = 'png';
+// for JPEG: $image_format = 'jpeg';
+$image_format = 'gif';
+
+/***** FONT FILE: font file for true type fonts. *****/
+// $font_file is a PATH to a font file. THIS IS NOT A URL!!
+// you will have to find the appropriate font file on the server or upload 
+// upload it!
+// if you upload a font file to the same directory as wxgraphic.php you can
+// define the path like this: $font_file = './arial.ttf';
+// if you want to use the default GD fonts set value as: $font_file = 'none';
+//$font_file = './arial.ttf';
+$font_file = 'none';
+
+/***** UNIT DEFINITIONS: define various units. *****/
+// no calculations are done with this, it just sets how units will read on the
+// graphic. if you don't want anything to display just make the value(s) empty
+// like this: $barom_units = '';
+$barom_units = 'in/Hg';
+$rain_units = 'in';
+$degree_units = '°F';
+$wind_units = 'mph';
+
+/***** HEAT INDEX and WIND CHILL THRESHOLDS: set heat index and wind chill *****/
+/***** threshold values.                                                   *****/
+// These values determine which will be displayed. If neither criteria
+// is met neither is displayed.                  
+
+// WIND CHILL THRESHOLD: wind chill will display if value is <= this value
+$wind_chill_threshold = '60';
+
+// HEAT INDEX THRESHOLD: heat index will display if value is >= to this value
+$heat_index_threshold = '70';
+
+// CURRENT CONDITIONS ICON: include a current conditions icon on the graphic
+// NOTE! currently only supported if you are using Weather Display 
+//       clientraw.txt or VWS for your data file.
+// if $curr_cond_icon is set to any value other than "yes" the icon will not
+// be included.
+$curr_cond_icon = 'yes';
+
+/***** ICON PLACEMENT: this section defines where the current      *****/
+/***** conditions/forecast icon will be placed if you are using it *****/
+// $default_icon_x: x coordinate on default image of the upper left most pixel of icon
+// $default_icon_y: y coordinate on default image of the upper left most pixel of icon
+$default_icon_x = '2';
+$default_icon_y = '2';
+// $banner_icon_x: x coordinate on banner of the upper left most pixel of icon
+// $banner_icon_y: y coordinate on banner of the upper left most pixel of icon
+$banner_icon_x = '300';
+$banner_icon_y = '2';
+// $banner_big_icon_x: x coordinate on banner_big of the upper left most pixel of icon
+// $banner_big_icon_y: y coordinate on banner_big of the upper left most pixel of icon
+$banner_big_icon_x = '2';
+$banner_big_icon_y = '2';
+// $avatar_icon_x: x coordinate on avatar of the upper left most pixel of icon
+// $avatar_icon_y: y coordinate on avatar of the upper left most pixel of icon
+$avatar_icon_x = '2';
+$avatar_icon_y = '2';
+
+/****************************************************************************/
+/************ Weather Display clientraw.txt Specific Parameters *************/
+/****************************************************************************/
+// These parameters only apply if you are using Weather Display's           //
+// clientraw.txt file as your datafile. If you are not using clientraw.txt  //
+// these parameters will have no affect so you may ignore them.             //
+/****************************************************************************/
+
+// TIME FORMAT 
+// for AM/PM use $time_format = 'AMPM';
+// for 24 hour use $time_format = '24HR';
+$time_format = 'AMPM';
+
+// TEMP CONVERSION: 
+// temperature conversion units
+// For Farenheight use $temp_conv = 'F';
+// For Celcius use $temp_conv = 'C';
+$temp_conv = 'F';
+
+// temp conversion precision
+// determines the number of decimal places
+// if "$temp_conv = 'C'" above, $temp_prec will only be effective at 1 or 0
+// see README.txt for a detailed explanation 
+$temp_prec = '1';
+
+// WIND CONVERSION: 
+// wind conversion units
+// For miles/hour use $wind_conv = 'MPH';
+// For kilometers/hour use $wind_conv = 'KPH';
+// For knots use $wind_conv = 'KTS';
+$wind_conv = 'MPH';
+
+// wind conversion precision
+// determines the number of decimal places
+// if "$wind_conv = 'KTS'" above, $wind_prec will only be effective at 1 or 0
+// see README.txt for a detailed explanation 
+$wind_prec = '1';
+
+// BAROMETRIC PRESSURE CONVERSION:
+// barometric pressure conversion units
+// For inHg use $barom_conv = 'INCHES';
+// For millbars or hPa use $barom_conv = 'MB';
+$barom_conv = 'INCHES';
+
+// barometer conversion precision
+// determines the number of decimal places
+// if "$barom_conv = 'MB'" above, $barom_prec will only be effective at 1 or 0
+// see README.txt for a detailed explanation 
+$barom_prec = '2';
+
+// RAIN CONVERSION:
+// rain fall conversion units
+// For in use $rain_conv = 'INCHES';
+// For mm use $barom_conv = 'MM';
+$rain_conv = 'INCHES';
+
+// rain conversion precision
+// determines the number of decimal places
+// if "$rain_conv = 'MM'" above, $rain_prec will only be effective at 1 or 0
+// see README.txt for a detailed explanation 
+$rain_prec = '2';
+
+/****************************************************************************/
+/********** End Weather Display clientraw.txt Specific Parameters ***********/
+/****************************************************************************/   
+
+/****************************************************************************/
+/***************************  Color Definitions *****************************/
+/****************************************************************************/
+// These are the color definitions for the images.
+// imagecolorallocate(image, red, green, blue);
+// where:
+// image = image variable. Will always be "$img".
+// red = red component 0-255
+// green = green component 0-255
+// blue = blue component 0-255
+
+function define_colors() {
+  global $img, $color1, $color2, $color3, $color4, $color5, $trans_color,
+         $anti_alias;
+
+  $color1 = imagecolorallocate($img,255,0,0);      // RED
+  $color2 = imagecolorallocate($img,0,128,0);      // GREEN
+  $color3 = imagecolorallocate($img,0,0,255);      // BLUE
+  $color4 = imagecolorallocate($img,0,0,0);        // BLACK
+  $color5 = imagecolorallocate($img,255,255,255);  // WHITE  
+
+  /***** Transparency settings *****/
+  // if using a transparent color set it here. the RGB value should match the
+  // color value of your images background, ie the color you want to be 
+  // transparent.
+  // This is only supported for gif and png images!
+  // IMPORTANT! don't set the pallete tranparency in your source image with
+  // your image editor! You'll get strange results if you do. 
+  // you may want to set $anti_alias to 'off' below to avoid the problems
+  // anti-aliasing can introduce with different background colors.
+  // See README.txt for more info on using transparency
+  // uncomment the two lines below to set transparency
+  //
+  //$trans_color = imagecolorallocate($img,250,250,250);
+  //$trans_color = imagecolortransparent($img,$trans_color);
+
+  // Transparency can be problematic with the anti-aliasing that occurs
+  // by default with TrueType fonts in GD. To help avoid the problems that can
+  // occur with anti-aliasing over different color backgrounds you can turn it
+  // off with this parameter. The tradeoff is that your text will not look as
+  // good.  
+  // To turn off TrueType anti-aliasing set "$anti_alias = 'off';
+  $anti_alias = 'on';
+
+} // end function define_colors
+
+/****************************************************************************/
+/************************* DATA WRITING FUNCTIONS ***************************/
+/****************************************************************************/
+
+// Below are the functions that write the actual data onto the image. I've 
+// broken them out into the config.txt file to make it easier to modify.
+// write_default: writes data onto the default image
+// write_banner: writes data onto the banner
+// write_banner_big: writes data onto the big banner
+// write_avatar: writes data onto the avatar image
+//
+// All data is written onto the image using the funcion:
+// imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);
+// where:
+// $x = x coordinate where the text will be centered
+// $y = y coordinate where the text will be centered
+// $text = the text to be written
+// $size = font size for built-in GD fonts (1,2,3,4, or 5)
+// $ttfsize = font size for ttf fonts. Use just like you would in a word processor
+// $color = color as defined in the allocate colors section below
+// $angle = for ttf fonts, determines the angle for the text.
+// you must pass all parameters even if you aren't using them. if you are not
+// using a parameter put '' in its place.
+
+/*****************************************************************************/
+/***** write_default: This function writes your values onto the default. *****/
+/*****************************************************************************/
+function write_default() {
+  // let's start by defining some global variables that will be passed between 
+  // functions. This is kind of clunky!
+  // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
+  global $color1, $color2, $color3, $color4, $color5, $date, $time, $temp, 
+         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units, 
+         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
+         $heat_index_threshold, $windchill, $wind_chill_threshold, 
+         $banner_icon_x, $banner_icon_y, $anti_alias;
+
+  // this section does the heat index and wind chill
+  // it figures out what to show, wind chill, heatindex or nothing
+  // depending upon your settings
+  switch (TRUE){
+  // if windchill is <= $wind_chill_threshold we'll output it
+  case ($windchill <= $wind_chill_threshold):
+       $feelslike = "Wind Chill: $windchill$degree_units";
+       imagecenteredtext(75, 62, "$feelslike", 2, 7, $color3, 0); 
+  break;
+  // if heat index >= $heat_index_threshold we'll output it 
+  case ($heatindex >= $heat_index_threshold):
+       $feelslike = "Heat Idx: $heatindex$degree_units";
+       imagecenteredtext(75, 62, "$feelslike", 2, 7, $color1, 0);
+  break;
+  } // end switch
+
+  // this section controls what is written to the image, where it is written.
+  // see the explanation above for details on what each parameter represents 
+  imagecenteredtext(90, 12, "A Title Here", 3, 10, $color2, 0); 
+  imagecenteredtext(90, 25, "Current Weather", 3, 10, $color2, 0); 
+  imagecenteredtext(75, 35, "$date @ $time", 1, 7, $color2, 0); 
+  imagecenteredtext(75, 54, "$temp$degree_units", 5, 18, $color4, 0); 
+  imagecenteredtext(75, 78, "Rain: $raintoday$rain_units", 5, 12, $color3, 0); 
+  imagecenteredtext(75, 96, "Wind: $winds", 5, 10, $color4, 0); 
+  imagecenteredtext(75, 108, "Gust: $gust$wind_units", 2, 7, $color4, 0); 
+  imagecenteredtext(75, 120, "$barom$barom_units", 2, 7, $color4, 0); 
+  imagecenteredtext(75, 130, "$baromtrendwords", 1, 7, $color4, 0); 
+  imagecenteredtext(75, 145, "Click For More", 2, 7, $color1, 0); 
+
+} /***** end function write_default *****/
+
+/******************************************************************************/
+/*** write_banner: This function writes your values onto the 468X60 banner. ***/
+/******************************************************************************/
+function write_banner() {
+
+  // let's start by defining some global variables that will be passed between 
+  // functions. This is kind of clunky!
+  // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
+  global $color1, $color2, $color3, $color4, $color5, $date, $time, $temp, 
+         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units, 
+         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
+         $heat_index_threshold, $windchill, $wind_chill_threshold, 
+         $banner_icon_x, $banner_icon_y, $anti_alias;
+
+  // this section does the heat index and wind chill
+  // it figures out what to show, wind chill, heatindex or nothing
+  // depending upon your settings
+  switch (TRUE){
+  // if windchill is <= $wind_chill_threshold we'll output it
+  case ($windchill <= $wind_chill_threshold):
+       $feelslike = "Wind Chill: $windchill$degree_units";
+       imagecenteredtext(70, 38, "$feelslike", 2, 7, $color3, 0);
+  break; 
+  // if heat index >= $heat_index_threshold we'll output it 
+  case ($heatindex >= $heat_index_threshold):
+       $feelslike = "Heat Idx: $heatindex$degree_units";
+       imagecenteredtext(70, 38, "$feelslike", 2, 7, $color1, 0);
+  break;
+  } // end switch
+
+  // this section controls what is written to the image, where it is written.
+  // see the explanation above for details on what each parameter represents 
+  imagecenteredtext(90, 12, "A Title Here", 5, 10, $color2, 0);
+  imagecenteredtext(422, 10, "Click For More", 2, 7, $color1, 0); 
+  imagecenteredtext(234, 24, "$date @ $time", 1, 7, $color2, 0); 
+  imagecenteredtext(70, 25, "Temp: $temp$degree_units", 5, 11, $color4, 0); 
+  imagecenteredtext(70, 50, "Humidity: $humidity%", 5, 9, $color4, 0); 
+  imagecenteredtext(234, 36, "Wind: $winds", 5, 11, $color4, 0); 
+  imagecenteredtext(234, 48, "Gust: $gust$wind_units", 2, 7, $color4, 0); 
+  imagecenteredtext(400, 25, "Rain: $raintoday$rain_units", 5, 11, $color3, 0); 
+  imagecenteredtext(400, 38, "Dew Pt: $dewpt$degree_units", 5, 9, $color4, 0); 
+  imagecenteredtext(400, 50, "$barom$barom_units $baromtrendwords", 2, 7, $color4, 0); 
+
+} // end function write_banner
+
+/******************************************************************************/
+/* write_banner_big: This function writes your values onto the 500X80 banner. */
+/******************************************************************************/
+function write_banner_big() {
+
+  // let's start by defining some global variables that will be passed between 
+  // functions. This is kind of clunky!
+  // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
+  global $color1, $color2, $color3, $color4, $color5, $date, $time, $temp, 
+         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units, 
+         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
+         $heat_index_threshold, $windchill, $wind_chill_threshold, 
+         $banner_icon_x, $banner_icon_y, $anti_alias;
+
+  // this section does the heat index and wind chill
+  // it figures out what to show, wind chill, heatindex or nothing
+  // depending upon your settings
+  switch (TRUE){
+  // if windchill is <= $wind_chill_threshold we'll output it
+  case ($windchill <= $wind_chill_threshold):
+       $feelslike = "Wind Chill: $windchill$degree_units";
+       imagecenteredtext(90, 50, "$feelslike", 2, 8, $color3, 0);
+  break; 
+  // if heat index >= $heat_index_threshold we'll output it 
+  case ($heatindex >= $heat_index_threshold):
+       $feelslike = "Heat Idx: $heatindex$degree_units";
+       imagecenteredtext(90, 50, "$feelslike", 2, 8, $color1, 0);
+  break;
+  } // end switch
+
+  // this section controls what is written to the image, where it is written.
+  // see the explanation above for details on what each parameter represents 
+  imagecenteredtext(250, 10, "A Title Here", 5, 14, $color2, 0); 
+  imagecenteredtext(456, 10, "Click For More", 2, 7, $color1, 0); 
+  imagecenteredtext(250, 35, "$date @ $time", 2, 8, $color2, 0); 
+  imagecenteredtext(90, 38, "Temp: $temp$degree_units", 5, 14, $color4, 0); 
+  imagecenteredtext(90, 65, "Humidity: $humidity%", 5, 11, $color4, 0); 
+  imagecenteredtext(250, 53, "Wind: $winds", 5, 11, $color4, 0); 
+  imagecenteredtext(250, 67, "Gust: $gust$wind_units", 2, 8, $color4, 0); 
+  imagecenteredtext(425, 36, "Rain: $raintoday$rain_units", 5, 14, $color3, 0); 
+  imagecenteredtext(425, 51, "Dew Pt: $dewpt$degree_units", 5, 11, $color4, 0); 
+  imagecenteredtext(425, 63, "$barom$barom_units $baromtrendwords", 2, 8, $color4, 0); 
+
+} /***** end function write_banner_big *****/
+
+/*****************************************************************************/
+/***** write_avatar: This function writes your values onto the avatar. *****/
+/*****************************************************************************/
+function write_avatar() {
+  // let's start by defining some global variables that will be passed between 
+  // functions. This is kind of clunky!
+  // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
+  global $color1, $color2, $color3, $color4, $color5, $date, $time, $temp, 
+         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units, 
+         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
+         $heat_index_threshold, $windchill, $wind_chill_threshold, 
+         $banner_icon_x, $banner_icon_y, $anti_alias;
+
+  // this section does the heat index and wind chill
+  // it figures out what to show, wind chill, heatindex or nothing
+  // depending upon your settings
+  switch (TRUE){
+  // if windchill is <= $wind_chill_threshold we'll output it
+  case ($windchill <= $wind_chill_threshold):
+       $feelslike = "WindCh: $windchill$degree_units";
+       imagecenteredtext(50, 50, "$feelslike", 1, 7, $color3, 0); 
+  break;
+  // if heat index >= $heat_index_threshold we'll output it 
+  case ($heatindex >= $heat_index_threshold):
+       $feelslike = "HeatIdx: $heatindex$degree_units";
+       imagecenteredtext(50, 50, "$feelslike", 1, 7, $color1, 0);
+  break;
+  } // end switch
+
+  // this section controls what is written to the image, where it is written.
+  // see the explanation above for details on what each parameter represents 
+  imagecenteredtext(65, 10, "Title Here", 2, 8, $color2, 0); 
+  imagecenteredtext(65, 20, "Curr Wx", 2, 8, $color2, 0); 
+  imagecenteredtext(50, 40, "$temp$degree_units", 5, 14, $color4, 0); 
+  imagecenteredtext(50, 60, "Rain: $raintoday$rain_units", 3, 9, $color3, 0); 
+  imagecenteredtext(50, 72, "$winds", 3, 9, $color4, 0); 
+  imagecenteredtext(50, 82, "$barom$barom_units", 1, 8, $color4, 0); 
+  imagecenteredtext(50, 96, "$date $time", 1, 7, $color2, 0); 
+
+} /***** end function write_avatar *****/
+
+
+/************************* END WRITING FUNCTIONS ******************************/
+
+/******************************************************/
+/************ End of User Configuration ***************/
+/******************************************************/
+?>
