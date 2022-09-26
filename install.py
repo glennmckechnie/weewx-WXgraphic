@@ -50,7 +50,6 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'skins/WXgraphic/PHP_verify.php',
                     'skins/WXgraphic/README.txt',
                     'skins/WXgraphic/index.php',
-                    'skins/WXgraphic/wxgraphic.php',
                     'skins/WXgraphic/icons/day_clear.gif',
                     'skins/WXgraphic/icons/day_clear.jpeg',
                     'skins/WXgraphic/icons/day_clear.png',
