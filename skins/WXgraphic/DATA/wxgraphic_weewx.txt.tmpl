@@ -17,7 +17,6 @@
 ## https://github.com/weewx/weewx/wiki/responsive (WL_stickertags.txt.tmpl)
 ## Check with your local mesonet
 ##
-
 ## Modified by Glenn McKechnie - 26/09/2022 to work with wxgraphic
 ## wxgraphics will apparently use clientraw.txt files if so configured.
 ## This file is the VWS format, not all fields are present, but careful editing
@@ -25,8 +24,6 @@
 ##    time,date,temp,heatindex,wind chill,humidity,dew point,barometer,
 ##    barometer trend,wind speed,wind direction,todays rain,
 ##    (currentconditions,sunrise,sunset) are optional
-
-
 #set $blank = ""
 #set $WXG_TIME = $current.dateTime.format("%X")
 #set $WXG_DATE = $current.dateTime.format("%x")
