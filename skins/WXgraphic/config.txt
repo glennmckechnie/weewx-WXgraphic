@@ -248,7 +248,7 @@ function write_default() {
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
   // imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);
-  imagecenteredtext(90, 12, "Weather Station"", 3, 10, $color2, 0);
+  imagecenteredtext(90, 12, "Weather Station", 3, 10, $color2, 0);
   imagecenteredtext(90, 25, "Current Weather", 3, 10, $color2, 0);
   imagecenteredtext(75, 35, "$date @ $time", 1, 7, $color2, 0);
   //imagecenteredtext(75, 54, "$temp$degree_units", 5, 18, $color4, 0);
@@ -294,7 +294,7 @@ function write_banner() {
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
-  imagecenteredtext(90, 12, "Weather Station"", 5, 10, $color2, 0);
+  imagecenteredtext(90, 12, "Weather Station", 5, 10, $color2, 0);
   imagecenteredtext(422, 10, "", 2, 7, $color1, 0);
   imagecenteredtext(234, 24, "$date @ $time", 1, 7, $color2, 0);
   imagecenteredtext(70, 25, "Temp: $temp$degree_units", 5, 11, $color4, 0);
@@ -339,7 +339,7 @@ function write_banner_big() {
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
-  imagecenteredtext(250, 10, "Weather Station"", 5, 14, $color2, 0);
+  imagecenteredtext(250, 10, "Weather Station", 5, 14, $color2, 0);
   imagecenteredtext(456, 10, " For More", 2, 7, $color1, 0);
   imagecenteredtext(250, 35, "$date @ $time", 2, 8, $color2, 0);
   imagecenteredtext(90, 38, "Temp: $temp$degree_units", 5, 14, $color4, 0);
