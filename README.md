@@ -74,6 +74,15 @@ Currently no editing is required within the skin.conf file - that may change lat
 
 The original script wxgraphic.php has been renamed as index.php. Currently, that's the only change to the original source. However, this installation does not install every file from the wxgraphic_6.3 source. They are available in the master file , or the github repo if you want them.
 
+6. Usage:-
+
+```http://your_weewx_servers_name/weewx/wxgraphic/```
+
+Or as embedded html.
+
+```<img src="http://your_weewx_servers_name/weewx/wxgraphic/" alt="wxgraphics weather image">```
+
+
 # To Do - perhaps...
 
    Extract the title, and units and populate the config.txt from weewx.conf or supplied skin.conf values. Also the current conditions icons need to be incorporated.
