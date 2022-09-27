@@ -5,8 +5,6 @@
 # https://github.com/glennmckechnie/weewx-wxgraphic
 
 from setup import ExtensionInstaller
-import random
-import string
 
 
 def loader():
@@ -17,7 +15,7 @@ class WXgraphicInstaller(ExtensionInstaller):
     def __init__(self):
 
         super(WXgraphicInstaller, self).__init__(
-            version='0.6.3',
+            version='0.6.4',
             name='wxgraphic',
             description='Weather Graphic image generator via a php'
                         ' script',
@@ -30,7 +28,8 @@ class WXgraphicInstaller(ExtensionInstaller):
                         'HTML_ROOT': 'wxgraphic',
                         'skin': 'WXgraphic',
                         'enable': 'True'}}},
-            files=[('skins/WXgraphic', [
+            files=[('bin/user', ['bin/user/wxgraphic.py']),
+                   ('skins/WXgraphic', [
                     'skins/WXgraphic/skin.conf',
                     'skins/WXgraphic/DATA/wxgraphic_weewx.txt.tmpl',
                     'skins/WXgraphic/avatar.gif',
@@ -43,6 +42,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'skins/WXgraphic/banner.jpeg',
                     'skins/WXgraphic/banner.png',
                     'skins/WXgraphic/config.txt',
+                    'skins/WXgraphic/config.txt.tmpl',
                     'skins/WXgraphic/default.gif',
                     'skins/WXgraphic/default.jpeg',
                     'skins/WXgraphic/default.png',

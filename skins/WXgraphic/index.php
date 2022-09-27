@@ -50,13 +50,14 @@ require "./config.txt";
 // the WD flag for those specific routines to be executed.
 if (preg_match('|clientraw.txt|', $data_file_path)){
    $use_wd_clientraw = '1';
-} //end if
+}else{ //end if
+   $use_wd_clientraw = '0';}
 
-// get the data file. If we don't get it the first time we'll make two 
+// get the data file. If we don't get it the first time we'll make two
 // more attempts then output an image that indicates we don't have any
 // data.
 // This is not very elegant but it seems to work better with less problems
-// than a while loop. 
+// than a while loop.
 @$dataraw = file_get_contents($data_file_path);
 if (empty ($dataraw)) {
     sleep(2);
@@ -272,10 +273,11 @@ if ($use_wd_clientraw == '1') {
 
 // and if we're not using WD clientraw.txt we just need put the data
 // into an array
+// wxgraphic_weewx.txt
 else {
      $data = explode(",", $dataraw);
      // clean up and define the data points
-     $time = trim($data[0]);
+     $t_ime = trim($data[0]);
      $date = trim($data[1]);
      (float)$temp = trim($data[2]);
      (float)$heatindex = trim($data[3]);
@@ -291,12 +293,11 @@ else {
      $forecast = trim(strtoupper($data[13]));
      $sunrise = trim($data[14]);
      $sunset = trim($data[15]);
-
      // define the VWS current conditions icon
      // first figure if its night or day
      $sunrise_epoch = strtotime("$sunrise");
      $sunset_epoch = strtotime("$sunset");
-     $time_epoch = strtotime("$time");
+     $time_epoch = strtotime("$t_ime");
 
      if ($time_epoch >= $sunset_epoch or $time_epoch <= $sunrise_epoch) {
          $daynight = 'night';
@@ -329,24 +330,24 @@ else {
      $vws_icon["SCATTERED CLOUDS"] = "./icons/" . "$daynight" . "_partly_cloudy.$image_format";
      $vws_icon["BLOWING SNOW"] = "./icons/" . "$daynight" . "_snow.$image_format";
      $vws_icon["DRIFTING SNOW"] = "./icons/" . "$daynight" . "_snow.$image_format";
-     $vws_icon["RAIN+SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["SNOW+FREEZING RAIN"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["SNOW+RAIN"] = " /icons/$daynight_snow.$image_format";
-     $vws_icon["RAIN+SNOW+SHOWERS"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["FREEZING RAIN AND SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["RAIN AND SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["SNOW AND RAIN"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["CHANCE OF RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["FREEZING RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["RAIN+MIXED+SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["SNOW+MIXED+RAIN"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["MIXPCPN"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["SLEET+AND+SNOW"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["SLEET"] = "/icons/$daynight_sleet.$image_format";
-     $vws_icon["WINTRY MIX"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["CHANCE OF SNOW OR RAIN"] = "/icons/$daynight_snow.$image_format";
-     $vws_icon["SNOW OR RAIN"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["RAIN+SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["SNOW+FREEZING RAIN"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["SNOW+RAIN"] = " /icons/$daynight_snow.$image_format";
+     //$vws_icon["RAIN+SNOW+SHOWERS"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["FREEZING RAIN AND SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["RAIN AND SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["SNOW AND RAIN"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["CHANCE OF RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["FREEZING RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["RAIN+MIXED+SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["SNOW+MIXED+RAIN"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["MIXPCPN"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["SLEET+AND+SNOW"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["SLEET"] = "/icons/$daynight_sleet.$image_format";
+     //$vws_icon["WINTRY MIX"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["CHANCE OF SNOW OR RAIN"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["SNOW OR RAIN"] = "/icons/$daynight_snow.$image_format";
      $vws_icon["PARTLY|MOSTLY+CLOUDY|SUNNY+THUNDERSTORM"] = "./icons/" . "$daynight" . "_tstorm.$image_format";
      $vws_icon["CHANCE OF+THUNDERSTORM"] = "./icons/" . "$daynight" . "_tstorm.$image_format";
      $vws_icon["THUNDERSTORM"] = "./icons/" . "$daynight" . "_tstorm.$image_format";
@@ -391,7 +392,7 @@ else {
      $vws_icon["DRIZZLE"] = "./icons/" . "$daynight" . "_light_rain.$image_format";
      $vws_icon["MIST"] = "./icons/haze.$image_format";
      $vws_icon["SMOKE"] = "./icons/haze.$image_format";
-     $vws_icon["FROZEN PRECIP"] = "/icons/$daynight_snow.$image_format";
+     //$vws_icon["FROZEN PRECIP"] = "/icons/$daynight_snow.$image_format";
      $vws_icon["DRY"] = "./icons/" . "$daynight" . "_clear.$image_format";
      $vws_icon["VARIABLE HIGH CLOUDINESS"] = "./icons/" . "$daynight" . "_partly_cloudy.$image_format";
      $vws_icon["PARTLY CLOUDY"] = "./icons/" . "$daynight" . "_partly_cloudy.$image_format";
@@ -425,16 +426,16 @@ switch (TRUE) {
   case ($wind == 0):
     $winds = "Calm";
   break;
-  case (($wind > 0) and ($_REQUEST["type"] == "banner")):
+  case (($wind > 0) and ($image_type == "banner")):
     $winds = "$winddir @ $wind$wind_units";
   break;
-  case (($wind > 0) and ($_REQUEST["type"] == "banner_big")):
+  case (($wind > 0) and ($image_type == "banner_big")):
     $winds = "$winddir @ $wind$wind_units";
   break;
-  case (($wind > 0) and ($_REQUEST["type"] == "avatar")):
+  case (($wind > 0) and ($image_type == "avatar")):
     $winds = "$winddir @ $wind$wind_units";
   break;
-  case (($wind > 0) and (empty($_REQUEST["type"]))):
+  case (($wind > 0) and (empty($image_type))):
     $winds = "$winddir @ $wind";
   break;
 } // end switch
@@ -508,7 +509,7 @@ define_colors();
 
 // now let's create the image
 switch (TRUE){
-  case ($type == "banner"):
+  case ($image_type == "banner"):
        // put the icon on the background
        if (isset($icon)) {
           imagecopyresampled($img, $icon, $banner_icon_x, $banner_icon_y, 0, 0, 25, 25, 25, 25);
@@ -516,41 +517,41 @@ switch (TRUE){
        // write the text onto the 468X60 banner
        write_banner();
   break;
-  case ($type == "banner_big"):
+  case ($image_type == "banner_big"):
        if (isset($icon)) {
           imagecopyresampled($img, $icon, $banner_big_icon_x, $banner_big_icon_y, 0, 0, 25, 25, 25, 25);
       } // end if
        // write the text onto the 500X80 banner
        write_banner_big();
   break;
-  case ($type == "avatar"):
+  case ($image_type == "avatar"):
        if (isset($icon)) {
           imagecopyresampled($img, $icon, $avatar_icon_x, $avatar_icon_y, 0, 0, 25, 25, 25, 25);
       } // end if
-       // write the text onto the 500X80 banner
+       // write the text onto the 100X100 banner
        write_avatar();
   break;
-  case empty($type):
+  case empty($image_type): // or ($image_type == "default")):
        if (isset($icon)) {
           imagecopyresampled($img, $icon, $default_icon_x, $default_icon_y, 0, 0, 25, 25, 25, 25);
        } // end if
-       // write the text onto the default image
+       // write the text onto the default 150X150 image
      write_default();
   break;
 } // end switch
 
 // send header to browser
 switch (TRUE) {
-  case ($image_format == 'gif') : 
-       header('Content-type: image/gif'); 
+  case ($image_format == 'gif') :
+       header('Content-type: image/gif');
        imagegif($img);
   break;
-  case ($image_format == 'png') : 
-       header('Content-Type: image/png'); 
+  case ($image_format == 'png') :
+       header('Content-Type: image/png');
        imagepng($img);
   break;
-  case ($image_format == 'jpeg') : 
-       header('Content-type: image/jpeg'); 
+  case ($image_format == 'jpeg') :
+       header('Content-type: image/jpeg');
        imagejpeg($img);
   break;
 } // end switch 
@@ -600,39 +601,39 @@ function imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle) {
 
 } // end function imagecenteredtext
 
-// create_base_image() : creates the base image based on on the "type"
+// create_base_image() : creates the base image based on on the "image_type"
 // passed to the script.
 function create_base_image() {
-  global $image_format, $baseimg, $type;
+  global $image_format, $baseimg, $image_type;
 
-  // set the type of graphic we're going to output based on the type parm
-  if (isset($_REQUEST["type"])) {
-     $type = $_REQUEST["type"];
+  // set the type of graphic we're going to output based on the image_type parm
+  if (isset($_REQUEST["image_type"])) {
+     $image_type = $_REQUEST["image_type"];
   } // end if
 
   // generate the base image
-  if (isset($type)) {
+  if (isset($image_type)) {
      switch (TRUE) {
-        case ($image_format == 'gif') : 
-             $baseimg = imagecreatefromgif("$type.$image_format");
+        case ($image_format == 'gif') :
+             $baseimg = imagecreatefromgif("$image_type.$image_format");
         break;
-        case ($image_format == 'png') : 
-             $baseimg = imagecreatefrompng("$type.$image_format");
+        case ($image_format == 'png') :
+             $baseimg = imagecreatefrompng("$image_type.$image_format");
         break;
-        case ($image_format == 'jpeg') : 
-             $baseimg = imagecreatefromjpeg("$type.$image_format");
+        case ($image_format == 'jpeg') :
+             $baseimg = imagecreatefromjpeg("$image_type.$image_format");
         break;
       } // end switch
   } // end if
   else {
        switch (TRUE) {
-         case ($image_format == 'gif') : 
+         case ($image_format == 'gif') :
               $baseimg = imagecreatefromgif("default.$image_format");
          break;
-         case ($image_format == 'png') : 
+         case ($image_format == 'png') :
               $baseimg = imagecreatefrompng("default.$image_format");
          break;
-         case ($image_format == 'jpeg') : 
+         case ($image_format == 'jpeg') :
               $baseimg = imagecreatefromjpeg("default.$image_format");
          break;
        } // end switch
@@ -644,7 +645,7 @@ function create_base_image() {
 // no_data_text1: top line of text
 // no_data_text2: bottom line of text
 function nodataimage ($no_data_text1, $no_data_text2) {
-  global $baseimg, $font_file, $image_format, $img, $type, $color1, $color2, $color3, $color4, $color5;
+  global $baseimg, $font_file, $image_format, $img, $image_type, $color1, $color2, $color3, $color4, $color5;
 
   // create the base image
   create_base_image();
@@ -662,35 +663,35 @@ function nodataimage ($no_data_text1, $no_data_text2) {
 
   //write the text onto the image
   switch (TRUE) {
-    case empty($_REQUEST["type"]):
+    case empty($image_type):
         imagecenteredtext(75, 65, "$no_data_text1", 5, 12, $color1, 0); 
         imagecenteredtext(75, 85, "$no_data_text2", 5, 12, $color1, 0); 
     break;
-    case ($_REQUEST["type"] == "banner"):
+    case ($image_type == "banner"):
          imagecenteredtext(234, 35, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0); 
     break;
-    case ($_REQUEST["type"] == "banner_big"):
+    case ($image_type == "banner_big"):
          imagecenteredtext(250, 45, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0); 
     break;
   } // end switch
 
   // send header to browser
   switch (TRUE) {
-    case ($image_format == 'gif') : 
-         header('Content-type: image/gif'); 
+    case ($image_format == 'gif') :
+         header('Content-Type: image/gif');
          imagegif($img);
     break;
-    case ($image_format == 'png') : 
-         header('Content-Type: image/png'); 
+    case ($image_format == 'png') :
+         header('Content-Type: image/png');
          imagepng($img);
     break;
-    case ($image_format == 'jpeg') : 
-         header('Content-type: image/jpeg'); 
+    case ($image_format == 'jpeg') :
+         header('Content-Type: image/jpeg');
          imagejpeg($img);
     break;
   } // end switch 
 
-// get rid of the image since we don't need it in memory any more. 
+// get rid of the image since we don't need it in memory any more.
 // don't need any memory leaks taking down the server
 imagedestroy($img);
 
