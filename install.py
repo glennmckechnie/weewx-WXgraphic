@@ -32,6 +32,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                    ('skins/WXgraphic', [
                     'skins/WXgraphic/skin.conf',
                     'skins/WXgraphic/DATA/wxgraphic_weewx.txt.tmpl',
+                    'skins/WXgraphic/DATA/index.html',
                     'skins/WXgraphic/avatar.gif',
                     'skins/WXgraphic/avatar.jpeg',
                     'skins/WXgraphic/avatar.png',
@@ -52,6 +53,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'skins/WXgraphic/PHP_verify.php',
                     'skins/WXgraphic/README.txt',
                     'skins/WXgraphic/index.php',
+                    'skins/WXgraphic/icons/index.html',
                     'skins/WXgraphic/icons/day_clear.gif',
                     'skins/WXgraphic/icons/day_clear.jpeg',
                     'skins/WXgraphic/icons/day_clear.png',
