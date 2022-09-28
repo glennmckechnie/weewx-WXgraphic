@@ -142,18 +142,18 @@ class WXgraphic (SearchList):
         if not self.add_text:
             self.add_text = "Click for More"
 
-        if self.sql_debug >= 0:  # sanity check for releases - safely ignored.
-            loginf("wxg: image_type is %s" % self.img_style)
-            loginf("wxg: data_file_path is %s" % self.d_f_p)
-            loginf("wxg: image_format is %s" % self.img_type)
-            loginf("wxg: font_file is %s" % self.f_file)
-            loginf("wxg: barom_unit %s" % self.b_u)
-            loginf("wxg: rain_units: %s" % self.r_u)
-            loginf("wxg: degree units: %s" % self.d_u)
-            loginf("wxg: wind units: %s" % self.w_u)
-            loginf("wxg: wind chill: %s" % self.w_c_t)
-            loginf("wxg: heat index: %s" % self.h_i_t)
-            loginf("wxg: current condition icon: %s" % self.c_c_i)
-            loginf("wxg: time format: %s" % self.t_f)
-            loginf("wxg: weather station is %s" % self.title_here)
-            loginf("wxg: additional text is %s" % self.add_text)
+        if self.sql_debug >= 5:  # sanity check for releases - safely ignored.
+            logdbg("wxg: image_type is %s" % self.img_style)
+            logdbg("wxg: data_file_path is %s" % self.d_f_p)
+            logdbg("wxg: image_format is %s" % self.img_type)
+            logdbg("wxg: font_file is %s" % self.f_file)
+            logdbg("wxg: barom_unit %s" % self.b_u)
+            logdbg("wxg: rain_units: %s" % self.r_u)
+            logdbg("wxg: degree units: %s" % self.d_u)
+            logdbg("wxg: wind units: %s" % self.w_u)
+            logdbg("wxg: wind chill: %s" % self.w_c_t)
+            logdbg("wxg: heat index: %s" % self.h_i_t)
+            logdbg("wxg: current condition icon: %s" % self.c_c_i)
+            logdbg("wxg: time format: %s" % self.t_f)
+            logdbg("wxg: weather station is %s" % self.title_here)
+            logdbg("wxg: additional text is %s" % self.add_text)
