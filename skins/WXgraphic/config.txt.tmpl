@@ -8,6 +8,7 @@
 //$image_type = 'banner_big';
 //$image_type = 'banner';
 //$image_type = 'avatar';
+//$image_type = 'custom';
 $image_type = '$img_style';
 
 /***** DATA FILE: defines the path to the data file. *****/
@@ -357,6 +358,52 @@ function write_banner_big() {
   imagecenteredtext(410, 66, "$barom$barom_units $baromtrendwords", 2, 8, $color4, 0);
 
 } /***** end function write_banner_big *****/
+
+/******************************************************************************/
+/* write_custom: This function writes your values onto a custom 500X80 banner.*/
+/*  imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);        */
+/******************************************************************************/
+function write_custom() {
+
+  // let's start by defining some global variables that will be passed between
+  // functions. This is kind of clunky!
+  // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
+  global $color1, $color2, $color3, $color4, $color5, $date, $t_ime, $temp,
+         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units,
+         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
+         $heat_index_threshold, $windchill, $wind_chill_threshold,
+         $banner_icon_x, $banner_icon_y, $anti_alias;
+
+  // this section does the heat index and wind chill
+  // it figures out what to show, wind chill, heatindex or nothing
+  // depending upon your settings
+  switch (TRUE){
+  // if windchill is <= $wind_chill_threshold we'll output it
+  case ($windchill <= $wind_chill_threshold):
+       $feelslike = "Wind Chill: $windchill$degree_units";
+       imagecenteredtext(90, 52, "$feelslike", 2, 8, $color3, 0);
+  break;
+  // if heat index >= $heat_index_threshold we'll output it
+  case ($heatindex >= $heat_index_threshold):
+       $feelslike = "Heat Idx: $heatindex$degree_units";
+       imagecenteredtext(90, 52, "$feelslike", 2, 8, $color1, 0);
+  break;
+  } // end switch
+
+  // this section controls what is written to the image, where it is written.
+  // see the explanation above for details on what each parameter represents
+  imagecenteredtext(250, 10, "$title_here", 5, 14, $color2, 0);
+  imagecenteredtext(456, 10, "$add_text", 2, 7, $color1, 0);
+  imagecenteredtext(250, 35, "$date @ $t_ime", 2, 8, $color2, 0);
+  imagecenteredtext(90, 38, "Temp: $temp$degree_units", 5, 14, $color4, 0);
+  imagecenteredtext(90, 65, "Humidity: $humidity%", 5, 11, $color4, 0);
+  imagecenteredtext(250, 53, "Wind: $winds", 5, 11, $color4, 0);
+  imagecenteredtext(250, 67, "Gust: $gust$wind_units", 2, 8, $color4, 0);
+  imagecenteredtext(400, 36, "Rain: $raintoday$rain_units", 5, 14, $color3, 0);
+  imagecenteredtext(400, 51, "Dew Pt: $dewpt$degree_units", 5, 11, $color4, 0);
+  imagecenteredtext(400, 66, "$barom$barom_units $baromtrendwords", 2, 8, $color4, 0);
+
+} /***** end function write_custom *****/
 
 /*****************************************************************************/
 /***** write_avatar: This function writes your values onto the avatar.   *****/

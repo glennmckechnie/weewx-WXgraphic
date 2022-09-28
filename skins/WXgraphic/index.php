@@ -435,6 +435,12 @@ switch (TRUE) {
   case (($wind > 0) and ($image_type == "avatar")):
     $winds = "$winddir @ $wind$wind_units";
   break;
+  case (($wind > 0) and ($image_type == "custom")):
+    $winds = "$winddir @ $wind$wind_units";
+  break;
+  case (($wind > 0) and ($image_type == "default")):
+    $winds = "$winddir @ $wind$wind_units";
+  break;
   case (($wind > 0) and (empty($image_type))):
     $winds = "$winddir @ $wind";
   break;
@@ -528,10 +534,17 @@ switch (TRUE){
        if (isset($icon)) {
           imagecopyresampled($img, $icon, $avatar_icon_x, $avatar_icon_y, 0, 0, 25, 25, 25, 25);
       } // end if
-       // write the text onto the 100X100 banner
+       // write the text onto the 100X100 avatar
        write_avatar();
   break;
-  case empty($image_type): // or ($image_type == "default")):
+  case ($image_type == "custom"):
+       if (isset($icon)) {
+          imagecopyresampled($img, $icon, $avatar_icon_x, $avatar_icon_y, 0, 0, 25, 25, 25, 25);
+      } // end if
+       // write the text onto the (custom) 500X80 banner
+       write_custom();
+  break;
+  case (empty($image_type) or ($image_type == "default")):
        if (isset($icon)) {
           imagecopyresampled($img, $icon, $default_icon_x, $default_icon_y, 0, 0, 25, 25, 25, 25);
        } // end if
