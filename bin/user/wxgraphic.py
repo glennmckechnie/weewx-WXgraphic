@@ -110,21 +110,13 @@ class WXgraphic (SearchList):
         if not self.f_file:
             self.f_file = "none"
         self.b_u = self.generator.skin_dict['WXgraphic'].get(
-            'barom_units', 'mBar')
-        if not self.b_u:
-            self.b_u = "mBar"
+            'barom_units', '')
         self.r_u = self.generator.skin_dict['WXgraphic'].get(
-            'rain_units', 'mm')
-        if not self.r_u:
-            self.r_u = "mm"
+            'rain_units', '')
         self.d_u = self.generator.skin_dict['WXgraphic'].get(
-            'degree_units', '°C')
-        if not self.d_u:
-            self.d_u = "°C"
+            'degree_units', '')
         self.w_u = self.generator.skin_dict['WXgraphic'].get(
-            'wind_units', 'kph')
-        if not self.w_u:
-            self.w_u = "kph"
+            'wind_units', '')
         self.w_c_t = self.generator.skin_dict['WXgraphic'].get(
             'wind_chill_threshold', '15.5')
         if not self.w_c_t:
