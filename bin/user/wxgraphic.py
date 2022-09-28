@@ -8,7 +8,6 @@
 #
 #
 
-import time
 
 import weewx.engine
 import weewx.manager
@@ -76,28 +75,11 @@ class WXgraphic (SearchList):
     def __init__(self, generator):
         SearchList.__init__(self, generator)
 
-        """
-        The following options are available in the skin.conf file. weewx.conf
-        may take precedence though so some may be ignored - seemingly.
-        """
-
-        # This probably abuses the weewx naming practice but it enables re-use
-        # of the skin (seperate reports) with different values:
-        # possibly databases, time_periods, all with their own report_timing
-        # stanzas of their own.
-        # If multiple skins are configured then it's probably best not to use
-        # the @daily etc shortcuts but rather use the '5 * 7 * *' style as the
-        # minutes can then be adjusted to prevent clashes were they to coincide
-        # skin_name also allows log messages to  reflect this skin re-use
-        global skin_name
-        skin_name = self.generator.skin_dict['skin']
-        self.skin_name = skin_name  # for export to the template / html
-
         # local (skin) debug switch "2" or weewx.debug, "4" adds extra to html
         # report page
         # 5 is for release testing only and can safely be ignored by users
         try:
-            self.sql_debug = int(self.generator.skin_dict[skin_name].get(
+            self.sql_debug = int(self.generator.skin_dict['WXgraphic'].get(
                 'sql_debug', '5'))
         except KeyError as e:
             # err with duplicate skin, if skin.conf [section] isn't renamed
@@ -107,37 +89,62 @@ class WXgraphic (SearchList):
             loginf('version is %s' % wxgraphic_version)
 
         data_path = self.generator.config_dict['StdReport']["WXgraphic"].get(
-            'HTML_ROOT', 'missing_name')
+            'HTML_ROOT', '/var/www/html/weewx/wgraphic')
         self.d_f_p = (data_path+"/DATA/wxgraphic_weewx.txt")
-        self.img_style = self.generator.skin_dict[skin_name].get(
-            'image_style', '')
-        # self.d_f_p = self.generator.skin_dict[skin_name].get(
-        #    'data_file_path', "")
-        self.img_type = self.generator.skin_dict[skin_name].get(
+        self.img_style = self.generator.skin_dict['WXgraphic'].get(
+            'image_style', 'default')
+        # These values are used by the php script. Empty values will break
+        # the script with NO feedback so we will at least prevent null values
+        if not self.img_style:
+            self.img_style = "default"
+        self.img_type = self.generator.skin_dict['WXgraphic'].get(
             'image_format', 'png')
-        self.f_file = self.generator.skin_dict[skin_name].get(
+        if not self.img_type:
+            self.img_type = "png"
+        self.f_file = self.generator.skin_dict['WXgraphic'].get(
             'font_file', 'none')
-
-        self.b_u = self.generator.skin_dict[skin_name].get(
+        if not self.f_file:
+            self.f_file = "none"
+        self.b_u = self.generator.skin_dict['WXgraphic'].get(
             'barom_units', 'mBar')
-        self.r_u = self.generator.skin_dict[skin_name].get(
+        if not self.b_u:
+            self.b_u = "mBar"
+        self.r_u = self.generator.skin_dict['WXgraphic'].get(
             'rain_units', 'mm')
-        self.d_u = self.generator.skin_dict[skin_name].get(
+        if not self.r_u:
+            self.r_u = "mm"
+        self.d_u = self.generator.skin_dict['WXgraphic'].get(
             'degree_units', '°C')
-        self.w_u = self.generator.skin_dict[skin_name].get(
+        if not self.d_u:
+            self.d_u = "°C"
+        self.w_u = self.generator.skin_dict['WXgraphic'].get(
             'wind_units', 'kph')
-        self.w_c_t = self.generator.skin_dict[skin_name].get(
-            'wind_chill_threshold', '60')
-        self.h_i_t = self.generator.skin_dict[skin_name].get(
-            'heat_index_threshold', '70')
-        self.c_c_i = self.generator.skin_dict[skin_name].get(
-            'curr_cond_icon', 'no')
-        self.t_f = self.generator.skin_dict[skin_name].get(
+        if not self.w_u:
+            self.w_u = "kph"
+        self.w_c_t = self.generator.skin_dict['WXgraphic'].get(
+            'wind_chill_threshold', '15.5')
+        if not self.w_c_t:
+            self.w_c_t = "15.5"
+        self.h_i_t = self.generator.skin_dict['WXgraphic'].get(
+            'heat_index_threshold', '21')
+        if not self.h_i_t:
+            self.h_i_t = "21"
+        self.c_c_i = self.generator.skin_dict['WXgraphic'].get(
+            'curr_cond_icon', 'yes')
+        if not self.c_c_i:
+            self.c_c_i = "yes"
+        self.t_f = self.generator.skin_dict['WXgraphic'].get(
             'time_format', '24HR')
-        self.title_here = self.generator.skin_dict[skin_name].get(
+        if not self.t_f:
+            self.t_f = "24HR"
+        self.title_here = self.generator.skin_dict['WXgraphic'].get(
             'weather_station', 'Add a title')
-        self.add_text = self.generator.skin_dict[skin_name].get(
+        if not self.title_here:
+            self.title_here = "Add a title"
+        self.add_text = self.generator.skin_dict['WXgraphic'].get(
             'additional_text', 'Click for More')
+        if not self.add_text:
+            self.add_text = "Click for More"
 
         if self.sql_debug >= 0:  # sanity check for releases - safely ignored.
             loginf("wxg: image_type is %s" % self.img_style)

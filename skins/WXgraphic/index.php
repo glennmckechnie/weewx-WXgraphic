@@ -433,16 +433,16 @@ switch (TRUE) {
     $winds = "$winddir @ $wind$wind_units";
   break;
   case (($wind > 0) and ($image_type == "avatar")):
-    $winds = "$winddir @ $wind$wind_units";
+    $winds = "$winddir@$wind$wind_units";
   break;
   case (($wind > 0) and ($image_type == "custom")):
     $winds = "$winddir @ $wind$wind_units";
   break;
   case (($wind > 0) and ($image_type == "default")):
-    $winds = "$winddir @ $wind$wind_units";
+    $winds = "$winddir@$wind$wind_units";
   break;
   case (($wind > 0) and (empty($image_type))):
-    $winds = "$winddir @ $wind";
+    $winds = "$winddir@$wind";
   break;
 } // end switch
 
