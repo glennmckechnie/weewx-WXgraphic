@@ -73,7 +73,7 @@ Any problems - raise an [issue](https://github.com/glennmckechnie/weewx-WXgraphi
 
    1. Fetch the archive
    
-      ```wget -o weewx-WXgraphic-main.zip https://github.com/glennmckechnie/weewx-WXgraphic/archive/refs/heads/main.zip```
+      ```wget -O weewx-WXgraphic-main.zip https://github.com/glennmckechnie/weewx-WXgraphic/archive/refs/heads/main.zip```
 
    2. Use wee_extension to install it
    
