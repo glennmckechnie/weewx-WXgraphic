@@ -88,9 +88,13 @@ class WXgraphic (SearchList):
         if weewx.debug >= 1 or self.sql_debug >= 1:
             loginf('version is %s' % wxgraphic_version)
 
-        data_path = self.generator.config_dict['StdReport']["WXgraphic"].get(
-            'HTML_ROOT', '/var/www/html/weewx/wgraphic')
-        self.d_f_p = (data_path+"/DATA/wxgraphic_weewx.txt")
+        self.d_f_p = self.generator.skin_dict['WXgraphic'].get(
+            'data_file_path')
+        if not self.d_f_p:
+            data_path = self.generator.config_dict['StdReport']["WXgraphic"] \
+                .get('HTML_ROOT', '/var/www/html/weewx/wgraphic')
+            self.d_f_p = (data_path+"/DATA/wxgraphic_weewx.txt")
+
         self.img_style = self.generator.skin_dict['WXgraphic'].get(
             'image_style', 'default')
         # These values are used by the php script. Empty values will break
