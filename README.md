@@ -168,6 +168,26 @@ The following fonts are include in the installation. Some layout co-ordinates (t
 ![banner_big-OpenSans-Regular.png](skins/WXgraphic/examples/banner_big-OpenSans-Regular.png) OpenSans-Regular.ttf
 ![banner_big-OpenSans-woff.png](skins/WXgraphic/examples/banner_big-OpenSans-woff.png)  OpenSans.woff
 
+## Troubleshooting
+
+After installation there will be a directory created on your webserver named wxgraphic (.../weewx/wxgraphic). Directly under that will be 20 (currently) visible files and 3 directories.
+
+A default installation (no changes to skin.conf) requires default.png, index.php, PHP_verify.php, config.txt, and DATA/wxgraphic_weewx.txt to be present and correct.
+
+The PHP_verify.php file is used to test your webservers php installation. When accessed by your browser it should give you an indication whether you have php and GD enabled. If it returns just garbage text (its contents are php code) then php is not installed and you need to install php and php-gd.
+
+When that is successful we need to check that the 2 files we generate from the templates - config.txt and DATA/wxgraphic_weewx.txt are correct.
+
+wxgraphic_weewx.txt (generated from .../skins/WXgraphic/DATA/wxgraphic_weewx.txt.tmpl) should look something like the example [wxgraphic_weewx.txt](/skins/WXgraphic/examples/wxgraphic_weewx.txt). That example shows the format and fields that you are expecting. There are 16 columns, one of which is blank - ''
+
+config.txt (generated from skins/WXgraphic.config.txt.tmpl) should appear similar to the contents of [config.txt](skins/WXgraphic/examples/config.txt). Check that the data_file_path line
+
+eg:- ```$data_file_path =  '/your_webservers_path/weewx/wxgraphic/DATA/wxgraphic_weewx.txt'```
+
+returns something that looks like the example above - from the command line eg:- 
+``` sudo cat /your_webservers_path/wxgraphic/DATA/wxgraphic_weewx.txt```
+
+??? More to come, as they arise
 
 ## Problems, Help ?
 
