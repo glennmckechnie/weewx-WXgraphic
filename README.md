@@ -1,3 +1,6 @@
+**29th Sept 2022**
+
+Add fonts, instructions, examples and the like.
 
 **26th Sept 2022**
 
@@ -166,5 +169,5 @@ The following fonts are include in the installation. No layout co-ordinates have
 
 ## Problems, Help ?
 
-Any problems - raise an [issue](https://github.com/glennmckechnie/weewx-WXgraphic/issues) on github
+Any problems, fixes, suggestions - raise an [issue](https://github.com/glennmckechnie/weewx-WXgraphic/issues) on github
 
