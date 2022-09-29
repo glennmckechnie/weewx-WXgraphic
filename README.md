@@ -3,7 +3,7 @@
 
 This repo simplifies the installation of wxgraphic-6.3, a "Weather Graphic" image generator that was originally available at [anolecomputer.com/wxgraphic](https://web.archive.org/web/20130105094954/http://scripts.anolecomputer.com/wxgraphic/). That original file is also available at [Saratoga-Weather.org](https://saratoga-weather.org/wxtemplates/plugins.php)
 
-This repo is concerned with wrapping that original package into an easily installable skin for WeeWX. It uses the wee_extension script to install a working version to your existing WeeWX installation. Some configuration may be needed to suit your setup but it will work straight after installation and a restart. You may not be happy with the colors or fonts though and some text will need tweaking, just as it always has been.
+It provides that original package as an easily installable skin for WeeWX. It uses the wee_extension script to install a working version to your existing WeeWX installation. Some configuration may be needed to suit your setup but it will work straight after installation and a restart. You may not be happy with the colors or fonts though and some text will need tweaking, just as it always has been.
 
 You also need a php and GD enabled webserver!
 
