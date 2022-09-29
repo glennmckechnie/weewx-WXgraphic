@@ -1,3 +1,7 @@
+**30th Sept 2022**
+
+Add a Troubleshooting section to the bottom of this page
+
 **29th Sept 2022**
 
 Add fonts, instructions, examples and the like.
