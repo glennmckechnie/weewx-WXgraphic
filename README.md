@@ -55,7 +55,55 @@ Any of the images can be replaced with an image of your choosing. The WeeWX inst
 
 Edits to config.txt.tmpl will propagate to the webserver on each report cycle when those edits will be used by index.php. Rinse, repeat. (After making backups)
 
-# The next step - editing the php and trialling changes.
+
+## Install, then configure
+
+
+   1. Fetch the archive
+   
+      ```wget -O weewx-WXgraphic-main.zip https://github.com/glennmckechnie/weewx-WXgraphic/archive/refs/heads/main.zip```
+
+   2. Use wee_extension to install it
+   
+      ```sudo wee_extension --install=weewx-WXgraphic-main.zip```
+
+   3. Restart weewx
+
+      ```sudo /etc/init.d/weewx stop```
+
+      ```sudo /etc/init.d/weewx start```
+
+This will install a skin named WXgraphic under the skins directory and will also enable it in weewx.conf
+
+   4. Configure your webserver.
+    
+It requires that your webserver runs php, and has access to GD.
+There is a file named PHP_verify.php within the new (www)wxgraphic server directory. Access that from your browser and it should present a html page that will hopefully announce your successful web server setup, if not install php for your webserver, or satisfy its other needs.
+
+When the weewx report cycle runs it will copy the www/wxgraphic directory to your webserver once, and once only. It will be named wxgraphic and will be in your weewx root directory (weewx/wxgraphic) by default.
+
+   5. Configure the php script
+
+Within that wxgraphic directory is a file named config.txt  That will require editing to change the configuration to suit your taste, set up.    
+You have your choice of banner, banner_big, avatar or if nothing is selected, a default image. Only the *.png files are copied over. If you want the other formats (jpeg, gif) thats a manual job for you to perform.
+
+The data to feed wxgraphic will be transferred at each weewx report cycle to (www) wxgraphic/DATA/weewx-wxgraphic.txt via the skins/WXgraphic/DATA/weewx-graphic.txt.tmpl
+Some editing is required within the skin.conf file.
+
+The original script wxgraphic.php has been renamed as index.php. However, this installation does not install every file from the wxgraphic_6.3 source. They are available in the master file , or the github repo if you want them.
+
+6. Usage:-
+
+```http://your_weewx_servers_name/weewx/wxgraphic/```
+
+Or as embedded html.
+
+```<img src="http://your_weewx_servers_name/weewx/wxgraphic/" alt="wxgraphics weather image">```
+
+
+
+
+## The next step - editing the php and trialling changes.
 
 Everything is working as it should, BUT... You've changed the fonts, don't like the layout, colors, whatever.
 
@@ -106,56 +154,17 @@ eg:-
 /******************************************************************************/
 function write_custom() {
 ```
+## Font examples
+
+The following fonts are include in the installation. No layout co-ordinates have been changed although some could be! It is a showcase only.
+
+![banner_big-none.png](skins/WXgraphic/examples/banner_big-none.png) none (uses the GD inbuilt default)
+![banner_big-OpenSans-Bold.png](skins/WXgraphic/examples/banner_big-OpenSans-Bold.png) OpenSans-Bold.tff
+![banner_big-OpenSans-Regular.png](skins/WXgraphic/examples/banner_big-OpenSans-Regular.png) OpenSans-Regular.ttf
+![banner_big-OpenSans-woff.png](skins/WXgraphic/examples/banner_big-OpenSans-woff.png)  OpenSans.woff
+
+
+## Problems, Help ?
 
 Any problems - raise an [issue](https://github.com/glennmckechnie/weewx-WXgraphic/issues) on github
-
-
-
-
-# Install, then configure
-
-
-   1. Fetch the archive
-   
-      ```wget -O weewx-WXgraphic-main.zip https://github.com/glennmckechnie/weewx-WXgraphic/archive/refs/heads/main.zip```
-
-   2. Use wee_extension to install it
-   
-      ```sudo wee_extension --install=weewx-WXgraphic-main.zip```
-
-   3. Restart weewx
-
-      ```sudo /etc/init.d/weewx stop```
-
-      ```sudo /etc/init.d/weewx start```
-
-This will install a skin named WXgraphic under the skins directory and will also enable it in weewx.conf
-
-   4. Configure your webserver.
-    
-It requires that your webserver runs php, and has access to GD.
-There is a file named PHP_verify.php within the new (www)wxgraphic server directory. Access that from your browser and it should present a html page that will hopefully announce your successful web server setup, if not install php for your webserver, or satisfy its other needs.
-
-When the weewx report cycle runs it will copy the www/wxgraphic directory to your webserver once, and once only. It will be named wxgraphic and will be in your weewx root directory (weewx/wxgraphic) by default.
-
-   5. Configure the php script
-
-Within that wxgraphic directory is a file named config.txt  That will require editing to change the configuration to suit your taste, set up.    
-You have your choice of banner, banner_big, avatar or if nothing is selected, a default image. Only the *.png files are copied over. If you want the other formats (jpeg, gif) thats a manual job for you to perform.
-
-The data to feed wxgraphic will be transferred at each weewx report cycle to (www) wxgraphic/DATA/weewx-wxgraphic.txt via the skins/WXgraphic/DATA/weewx-graphic.txt.tmpl
-Some editing is required within the skin.conf file.
-
-The original script wxgraphic.php has been renamed as index.php. However, this installation does not install every file from the wxgraphic_6.3 source. They are available in the master file , or the github repo if you want them.
-
-6. Usage:-
-
-```http://your_weewx_servers_name/weewx/wxgraphic/```
-
-Or as embedded html.
-
-```<img src="http://your_weewx_servers_name/weewx/wxgraphic/" alt="wxgraphics weather image">```
-
-
-
 
