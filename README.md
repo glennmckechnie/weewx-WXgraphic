@@ -157,9 +157,11 @@ eg:-
 /******************************************************************************/
 function write_custom() {
 ```
+See the commit - [adjust write_custom x, y to suit image with new fonts](https://github.com/glennmckechnie/weewx-WXgraphic/commit/d8049e759b6a3bbfa8593e9d05f8e5514c80787e) for an actual example of changing color and position settings in that above function.
+
 ## Font examples
 
-The following fonts are include in the installation. No layout co-ordinates have been changed although some could be! It is a showcase only.
+The following fonts are include in the installation. Some layout co-ordinates (the worst!) have been changed to suit the eye.
 
 ![banner_big-none.png](skins/WXgraphic/examples/banner_big-none.png) none (uses the GD inbuilt default)
 ![banner_big-OpenSans-Bold.png](skins/WXgraphic/examples/banner_big-OpenSans-Bold.png) OpenSans-Bold.tff
