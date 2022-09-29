@@ -5,7 +5,7 @@ This repo simplifies the installation of wxgraphic-6.3, a "Weather Graphic" imag
 
 It provides that original package as an easily installable skin for WeeWX. It uses the wee_extension script to install a working version to your existing WeeWX installation. Some configuration may be needed to suit your setup but it will work straight after installation and a restart. You may not be happy with the colors or fonts though and some text will need tweaking, just as it always has been.
 
-You also need a php and GD enabled webserver!
+You also need a php and GD (php-gd) enabled webserver!
 
 ## What is wxgraphic?
 
@@ -55,8 +55,51 @@ Any of the images can be replaced with an image of your choosing. The WeeWX inst
 
 Edits to config.txt.tmpl will propagate to the webserver on each report cycle when those edits will be used by index.php. Rinse, repeat. (After making backups)
 
-Text locations, colors etc can all be configured if you need to. The key for (x,y) is in the following example lines, in each function
-eg:- 
+# The next step - editing the php and trialling changes.
+
+Everything is working as it should, BUT... You've changed the fonts, don't like the layout, colors, whatever.
+
+The fastest and the safest way to make changes to that existing *working* layout is to edit the php files directly.
+
+Have I mentioned making backups yet? No !?
+Always make backups before changing a working set up. Do it frequently; now would be a good opportunity to learn and use [git](https://git-scm.com) even. It's ideal for this situation. (git init, git add, git commit, git checkout - and gitweb, all on a local installation)
+
+Right. Back to it.
+
+Once your safety net is in place and you're ready to edit the fragile stuff, you will need to disable the template generation for the config.txt file. In skin.conf comment out (add a #) to the template = config.txt.tmpl line at the end of the [CheetahGenerator] section. As per the following snippet...
+
+
+```
+[CheetahGenerator]
+    search_list_extensions = user.wxgraphic.WXgraphic
+        [[WXgraphic_weewx]]
+        [...]
+        [[Config]]
+             encoding = strict_ascii
+             #template = config.txt.tmpl
+
+```
+
+Once that is done you can go to the config.txt file on your webserver - weewx/wxgraphic/config.txt - and edit that file to your hearts content. Disabling the template prevents the config.txt file from being overwritten.
+
+Doing it this way allows for the rapid testing of any changes.
+
+Make change to config.txt
+Refresh the image from your browser.
+Re-edit the file.
+Rinse.
+Repeat.
+Finish.
+
+Once you have the image displaying as you want then go back to the skins/WXgraphic/config.txt.tmpl file and duplicate those changes you made to config.txt Once that is done then reinstate the template generation and make sure that those changes you made still work as intended.
+
+Once you have a working config.txt file that is being generated from config.txt.tmpl, whether you disable or enable the template is a matter of choice. With this skin nothing changes after you settle on a working version. However, later on may you want to edit one of the settings in skin.conf and you will need it running then. Your choice, you decide.
+
+
+Text locations, colors etc can all be configured. The key for (x,y) is in the following example lines, in each function
+eg:-
+
+
 ```/******************************************************************************/
 /* write_custom: This function writes your values onto a custom 500X80 banner.*/
 /*  imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);        */
