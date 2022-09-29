@@ -99,6 +99,8 @@ The original script wxgraphic.php has been renamed as index.php. However, this i
 
 ```http://your_weewx_servers_name/weewx/wxgraphic/```
 
+If my server is up and running then the following link should show a live example after you click on it of course. [http://203.213.243.61/weewx/wxgraphic/](http://203.213.243.61/weewx/wxgraphic/). No guarantees it will be up and running though - ISP availability and all that.
+
 Or as embedded html.
 
 ```<img src="http://your_weewx_servers_name/weewx/wxgraphic/" alt="wxgraphics weather image">```
@@ -169,6 +171,8 @@ The following fonts are include in the installation. Some layout co-ordinates (t
 ![banner_big-OpenSans-woff.png](skins/WXgraphic/examples/banner_big-OpenSans-woff.png)  OpenSans.woff
 
 ## Troubleshooting
+
+A call from a browser to a link like [http://203.213.243.61/weewx/wxgraphic/](http://203.213.243.61/weewx/wxgraphic/) should show an image. If my server is up and running then that link should show a live example. No guarantees it will be up and running though - ISP availability and all that.
 
 After installation there will be a directory created on your webserver named wxgraphic (.../weewx/wxgraphic). Directly under that will be 20 (currently) visible files and 3 directories.
 
