@@ -44,13 +44,13 @@
 #if $trend.barometer.raw is not None
     #set $WXG_BAROM_TREND = $trend.barometer.hPa.raw
    #if $WXG_BAROM_TREND >= 2.0
-    #set $WXG_BAROM_TREND_TXT = "Rising Rapidly"
+    #set $WXG_BAROM_TREND_TXT = "Rising_Rapidly"
    #else if $WXG_BAROM_TREND >= 0.7
-    #set $WXG_BAROM_TREND_TXT = "Rising Slowly"
+    #set $WXG_BAROM_TREND_TXT = "Rising_Slowly"
    #else if $WXG_BAROM_TREND <= -2.0
-    #set $WXG_BAROM_TREND_TXT = "Falling Rapidly"
+    #set $WXG_BAROM_TREND_TXT = "Falling_Rapidly"
    #else if $WXG_BAROM_TREND <= -0.7
-    #set $WXG_BAROM_TREND_TXT = "Falling Slowly"
+    #set $WXG_BAROM_TREND_TXT = "Falling_Slowly"
    #else
     #set $WXG_BAROM_TREND_TXT = "Steady"
    #end if
