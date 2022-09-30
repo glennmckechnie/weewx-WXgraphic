@@ -275,7 +275,7 @@ if ($use_wd_clientraw == '1') {
 // into an array
 // wxgraphic_weewx.txt
 else {
-     $data = explode(",", $dataraw);
+     $data = explode(" ", $dataraw);
      // clean up and define the data points
      $t_ime = trim($data[0]);
      $date = trim($data[1]);

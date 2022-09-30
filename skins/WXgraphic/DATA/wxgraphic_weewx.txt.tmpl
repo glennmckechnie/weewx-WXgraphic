@@ -21,9 +21,9 @@
 ## wxgraphics will apparently use clientraw.txt files if so configured.
 ## This file is the VWS format, not all fields are present, but careful editing
 ## will include them, if you have valid entries to display
-##    time,date,temp,heatindex,wind chill,humidity,dew point,barometer,
-##    barometer trend,wind speed,wind direction,todays rain,
-##    (currentconditions,sunrise,sunset) are optional
+##    time date temp heatindex wind chill humidity dew point barometer
+##    barometer trend wind speed wind direction todays rain
+##    (currentconditions sunrise sunset) are optional
 #set $blank = ""
 #set $WXG_TIME = $current.dateTime.format("%X")
 #set $WXG_DATE = $current.dateTime.format("%x")
@@ -65,11 +65,11 @@
 #set $WXG_SUNRISE = $almanac.sun.rise.format("%H:%M:%S")
 #set $WXG_SUNSET = $almanac.sun.set.format("%H:%M:%S")
 ##
-##<!--stationTime-->,<!--stationDate-->,<!--outsideTemp-->,<!--outsideHeatIndex-->,<!--windChill-->,<!--outsideHumidity-->,
+##<!--stationTime--> <!--stationDate--> <!--outsideTemp--> <!--outsideHeatIndex--> <!--windChill--> <!--outsideHumidity--> 
 ##        1                  2                   3                    4                   5                   6
-##<!--outsideDewPt-->,<!--barometer-->,<!--BarTrend-->,<!--wind10Avg-->,<!--windDirection-->,<!--dailyRain-->,<!--blank-->,
+##<!--outsideDewPt--> <!--barometer--> <!--BarTrend--> <!--wind10Avg--> <!--windDirection--> <!--dailyRain--> <!--blank--> 
 ##         7                  8               9                10                11                  12       13
-##<!--sunriseTime-->,<!--sunsetTime-->,<!--windAvg10-->,<!--windHigh10-->,<!--tempUnit-->|<!--windUnit-->|<!--barUnit-->|<!--rainUnit-->
+##<!--sunriseTime--> <!--sunsetTime--> <!--windAvg10--> <!--windHigh10--> <!--tempUnit-->|<!--windUnit-->|<!--barUnit-->|<!--rainUnit-->
 ##        14                15                16               17               18               19             20             21
 ##1      2        3           4                5                6          7        8         9                   10       11          12        13      14          15         16  17  18-21
-$WXG_TIME,$WXG_DATE,$WXG_OUTTEMP,$WXG_HEATAPPTEMP,$WXG_CHILLAPPTEMP,$WXG_OUTHUM,$WXG_DEWP,$WXG_BAROM,$WXG_BAROM_TREND_TXT,$WXG_WIND,$WXG_WINDDIR,$WXG_DAYRAIN,$WXG_WINDGUST,$blank,$WXG_SUNRISE,$WXG_SUNSET
+$WXG_TIME $WXG_DATE $WXG_OUTTEMP $WXG_HEATAPPTEMP $WXG_CHILLAPPTEMP $WXG_OUTHUM $WXG_DEWP $WXG_BAROM $WXG_BAROM_TREND_TXT $WXG_WIND $WXG_WINDDIR $WXG_DAYRAIN $WXG_WINDGUST $blank $WXG_SUNRISE $WXG_SUNSET
