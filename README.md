@@ -2,6 +2,12 @@
 
 Add a Troubleshooting section to the bottom of this page
 
+Thanks to 'an oldman' for the heads up.
+Bugfix:  When curr_cond_icom was set, to generate the day / night icons, a PHP Fatal error was being thrown when strict settings were enabled in php.ini
+This was preventing the image from displaying with the default settings of curr_cond_icon = 'yes'
+Fix: When that 'current_conditions' field in the weewx_wgraphics.txt is blank, we now skip the generation of a $ccicon. It is still available for later use.
+
+
 **29th Sept 2022**
 
 Add fonts, instructions, examples and the like.

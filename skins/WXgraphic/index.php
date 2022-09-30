@@ -464,17 +464,19 @@ if ($curr_cond_icon == 'yes') {
 
    if ($use_wd_clientraw != '1') {
       $default_icon = "./icons/" . "$daynight" . "_clear.$image_format";
-      switch (TRUE) {
-        case ($image_format == 'gif') : 
-             $ccicon = imagecreatefromgif($vws_icon[$forecast]);
-        break;
-        case ($image_format == 'png') :
-             $ccicon = imagecreatefrompng($vws_icon[$forecast]);
-        break;
-        case ($image_format == 'jpeg') : 
-             $ccicon = imagecreatefromjpeg($vws_icon[$forecast]);
-        break;
-      } // end switch
+      if ($forecast != ''){
+          switch (TRUE) {
+            case ($image_format == 'gif') :
+                 $ccicon = imagecreatefromgif($vws_icon[$forecast]);
+            break;
+            case ($image_format == 'png') :
+                 $ccicon = imagecreatefrompng($vws_icon[$forecast]);
+            break;
+            case ($image_format == 'jpeg') :
+                 $ccicon = imagecreatefromjpeg($vws_icon[$forecast]);
+            break;
+          } // end switch
+      } // end if
       if (empty($ccicon)) {
          switch (TRUE) {
            case ($image_format == 'gif') : 
