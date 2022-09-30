@@ -3,13 +3,20 @@
 Add a Troubleshooting section to the bottom of this page
 
 
-Bugfix:
+Bugfix #1:
 
 Thanks to 'an oldman' for the heads up.
 
 When curr_cond_icon was set, to generate the day / night icons, a PHP Fatal error was being thrown when strict settings were enabled in php.ini
 This was preventing the image from displaying with the default settings of curr_cond_icon = 'yes'
+
 Fix: When that 'current_conditions' field in the weewx_wgraphics.txt is blank (null), we now skip the generation of a $ccicon. It is still available for later use.
+
+Bugfix #2:
+
+Hartmut highlights the issue with the 'decimal comma'. 
+
+Fix: Change  weewx_wgraphics.txt.tmpl to a space separated file. Adapt the barom trend phrases using  '_'
 
 
 **29th Sept 2022**
