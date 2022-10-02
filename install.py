@@ -6,6 +6,11 @@
 
 from setup import ExtensionInstaller
 
+# wxgraphic_config '''
+# '''
+
+# wxgraphic_dict = configobj.ConfigObj(StringIO(wxgraphic_config))
+
 
 def loader():
     return WXgraphicInstaller()
@@ -27,7 +32,14 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'WXgraphic': {
                         'HTML_ROOT': 'wxgraphic',
                         'skin': 'WXgraphic',
-                        'enable': 'True'}}},
+                        'enable': 'True',
+                        'Units': {
+                            'Groups': {
+                            },
+                        },
+                    },
+                },
+            },
             files=[('bin/user', ['bin/user/wxgraphic.py']),
                    ('skins/WXgraphic', [
                     'skins/WXgraphic/skin.conf',
@@ -54,6 +66,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'skins/WXgraphic/README.txt',
                     'skins/WXgraphic/index.php',
                     'skins/WXgraphic/font/OpenSans-Bold.ttf',
+                    'skins/WXgraphic/font/index.html',
                     'skins/WXgraphic/font/OpenSans-Regular.ttf',
                     'skins/WXgraphic/font/OpenSans.woff',
                     'skins/WXgraphic/icons/index.html',

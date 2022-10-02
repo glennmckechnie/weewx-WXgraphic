@@ -1,6 +1,7 @@
-<?php 
+<?php
+// ini_set('display_errors',1);
 /******************************************************************************
-* wxgraphic.php v6.3
+* wxgraphic.php v6.5
 # renamed as index.php for weewx installation - Glenn McKechnie, Sept 2022
 *
 * Weather graphic generator
@@ -22,7 +23,7 @@
 * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 *
 *******************************************************************************
-* This script generates an image in gif, png, or jpg  
+* This script generates an image in gif, png, or jpg
 * format created from a user supplied background image and data file.
 *
 * The following assumptions are made in this script:
@@ -45,6 +46,18 @@
 
 //get the configuration file
 require "./config.txt";
+
+# why is this here?
+# It is to stop Cheetah generator complaining about the degree symbol '°'
+# Incidentally, that '°' consists soley of the hex code 'b0' <B0>
+# If it displays as garbage, use a hex editor to fix it - 'hexer index.php'
+# or copy one of those above spares (vim, highlight symbol, click as new :-)
+if ($degree_label === 'degree_F') {
+    $degree_units = '°F';
+    } else {
+        $degree_units = '°C';
+    }
+
 
 // see if the data file is a WD clientraw.txt file and set
 // the WD flag for those specific routines to be executed.
@@ -95,12 +108,12 @@ if ($use_wd_clientraw == '1') {
    (float)$dewpt = "$data[72]";
    (float)$heatindex = "$data[112]";
 
-   // set the time
+   // set the time (t_ime)
    if ($time_format == 'AMPM'){
-      $time = date('g:i A' , strtotime("$data[29]:$data[30]:$data[31]")); 
+      $t_ime = date('g:i A' , strtotime("$data[29]:$data[30]:$data[31]"));
    } // end if
    else {
-        $time = sprintf ("%02d:%02d", $data[29], $data[30]);
+        $t_ime = sprintf ("%02d:%02d", $data[29], $data[30]);
    } //end else
 
    // convert the temps
@@ -285,7 +298,8 @@ else {
      (float)$humidity = trim($data[5]);
      (float)$dewpt = trim($data[6]);
      (float)$barom = trim($data[7]);
-     $baromtrendwords = trim($data[8]);
+     // space separated file, need to replace the _ for appearance
+     $baromtrendwords = str_replace('_', ' ', (trim($data[8])));
      (float)$wind = trim($data[9]);
      $winddir = trim($data[10]);
      (float)$raintoday = trim($data[11]);
@@ -591,7 +605,7 @@ if (isset($icon)){
 // $color = color as defined in the allocate colors section below
 // $angle = for ttf fonts, determines the angle for the text.
 function imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle) {
-  global $font_file, $img ;
+  global $font_file, $img, $anti_alias ;
   // if FreeType is not supported OR $font_file is set to none
   // we'll use the GD default fonts
   $gdinf = gd_info();

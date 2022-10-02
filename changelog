@@ -1,0 +1,103 @@
+
+**1st Oct 2022**
+
+Wrapped up the existing repo and released it as [Stage 1 - Tweaked 'n Prodded,
+drawing a line in the
+sand.](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.4)
+
+Moving on to the next set of changes...
+
+If upgrading an existing extension, copy your existing config.txt.tmpl,
+skin.conf and index.php files. The old ones will be over written!
+
+The defaults in skin.conf have been refined. Those that are relevant only to
+clientraw.txt have been moved to their own section.
+
+WXgraphic now picks up the units via weewx
+[tags](https://weewx.com/docs/customizing.htm#Tag_$unit) which are set in
+weewx.conf. There is an empty section in [StdReports][WXgraphics] for the unit
+definitions but the default ones (for all skins) will apply regardless of the
+data file being used.
+
+
+```
+[StdReport]
+    [[WXgraphic]]
+         <can be set within here to overide the default secion below>
+
+    [[Defaults]]
+        [...]
+        [[[Units]]]
+            [...]
+            [[[[Groups]]]]
+                <preferred group settings as the default setup>
+```
+
+It also picks up the Station name provided in weex.conf, but retains the option
+in skin.conf to change it to something else - probably something shorter!
+
+The degrees symbol is back! Because of the difficulty to get the Cheetah
+Generator to parse the degree symbol '°' that has now been moved to index.php
+and renders correctly while it remains as a <B0> hex code.
+
+
+Thanks to Harmut for the note on this:
+Change windchill heatindex values in skin.conf to whole numbers purely to avoid
+problems when suppling a decimal poin when a decimal comma is require.
+
+Space separated weewx-wxgraphic.txt file:
+When index.php extracts the $baromtrendwords we now replace the '_' with a
+space, as it should be!
+
+add blank index.html in the remaining directories - a low level security step
+
+Fix anti_alias failure when using ttf fonts, those other than the GD default
+PHP Notice:  Undefined variable: anti_alias in /tmp/var/www/html/weewx/wxgraphic/index.php
+
+
+**30th Sept 2022**
+
+Add a Troubleshooting section to the bottom of this page
+
+
+Bugfix #1:
+
+Thanks to 'an oldman' for the heads up.
+
+When curr_cond_icon was set, to generate the day / night icons, a PHP Fatal
+error was being thrown when strict settings were enabled in php.ini This was
+preventing the image from displaying with the default settings of
+curr_cond_icon = 'yes'
+
+Fix: When that 'current_conditions' field in the weewx_wgraphics.txt is blank
+(null), we now skip the generation of a $ccicon. It is still available for
+later use.
+
+Bugfix #2:
+
+Hartmut highlights the issue with the 'decimal comma'. 
+
+Fix: Change  weewx_wgraphics.txt.tmpl to a space separated file. Adapt the
+barom trend phrases using  '_'
+
+**29th Sept 2022**
+
+Add fonts, instructions, examples and the like.
+
+**26th Sept 2022**
+
+This repo simplifies the installation of wxgraphic-6.3, a "Weather Graphic"
+image generator that was originally available at
+[anolecomputer.com/wxgraphic](https://web.archive.org/web/20130105094954/http://scripts.anolecomputer.com/wxgraphic/).
+That original file is also available at
+[Saratoga-Weather.org](https://saratoga-weather.org/wxtemplates/plugins.php)
+
+It provides that original package as an easily installable skin for WeeWX. It
+uses the wee_extension script to install a working version to your existing
+WeeWX installation. Some configuration may be needed to suit your setup but it
+will work straight after installation and a restart. You may not be happy with
+the colors or fonts though and some text will need tweaking, just as it always
+has been.
+
+You also need a php and GD (php-gd) enabled webserver!
+

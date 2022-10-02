@@ -1,10 +1,10 @@
 #errorCatcher Echo
 <?php
 /********************************************/
-/** Weather graphic generator v6.3         **/
+/** Weather graphic generator v6.5         **/
 /**          User Configuration            **/
 /********************************************/
-// 02/2018 Glenn McKechnie alternatves to the 'default' type
+// 02/2018 Glenn McKechnie alternatives to the 'default' type
 //$image_type = 'banner_big';
 //$image_type = 'banner';
 //$image_type = 'avatar';
@@ -16,8 +16,8 @@ $image_type = '$img_style';
 // path.
 // THIS IS NOT A URL!!
 // if using WD clientraw.txt supply the path to it.
-//$data_file_path  = '/var/www/html/weewx/DATA/myclientraw.txt';
-//$data_file_path  = "/var/www/html/weewx/DATA/wxgraphic_weewx.txt";
+//$data_file_path  = "/var/www/html/weewx/wxgraphic/DATA/gjr80-WeeWX-WD-clientraw.txt";
+//$data_file_path  = "/var/www/html/weewx/wxgraphic/DATA/wxgraphic_weewx.txt";
 $data_file_path  = '$d_f_p';
 
 /***** IMAGE FORMAT: defines the image format *****/
@@ -30,23 +30,44 @@ $image_format = '$img_type';
 
 /***** FONT FILE: font file for true type fonts. *****/
 // $font_file is a PATH to a font file. THIS IS NOT A URL!!
-// you will have to find the appropriate font file on the server or upload
-// upload it!
+// you will have to find the appropriate font file on the server or upload it!
+//
 // if you upload a font file to the same directory as wxgraphic.php you can
 // define the path like this: $font_file = './arial.ttf';
 // if you want to use the default GD fonts set value as: $font_file = 'none';
 //$font_file = './arial.ttf';
+//$font_file = "font/OpenSans-Bold.ttf";
+//$font_file = "font/OpenSans-Regular.ttf";
+//$font_file = "font/OpenSans.woff";
 //$font_file = 'none';
 $font_file = '$f_file';
+
+
+// See the Color Definitions section below regarding transperency, this
+// realates to that section
+// Transparency can be problematic with the anti-aliasing that occurs
+// by default with TrueType fonts in GD. To help avoid the problems that can
+// occur with anti-aliasing over different color backgrounds you can turn it
+// off with this parameter. The tradeoff is that your text will not look as
+// good.
+// To turn off TrueType anti-aliasing set "$anti_alias = 'off';
+$anti_alias = '$ttf_on';
 
 /***** UNIT DEFINITIONS: define various units. *****/
 // no calculations are done with this, it just sets how units will read on the
 // graphic. if you don't want anything to display just make the value(s) empty
 // like this: $barom_units = '';
-$barom_units = '$b_u';
-$rain_units = '$r_u';
-$degree_units = '$d_u';
-$wind_units = '$w_u';
+//$barom_units = '$b_u';
+//$rain_units = '$r_u';
+//$degree_units = '$d_u';
+//$wind_units = '$w_u';
+// These are now transferred from weewx. They are the default values for
+// your weewx report cycle.
+
+$barom_units = "$unit.label.pressure";
+$rain_units = "$unit.label.rain";
+$degree_label = "$unit.unit_type.outTemp";
+$wind_units = "$unit.label.wind";
 
 /***** HEAT INDEX and WIND CHILL THRESHOLDS: set heat index and wind chill *****/
 /***** threshold values.                                                   *****/
@@ -91,6 +112,8 @@ $avatar_icon_y = '2';
 // These parameters only apply if you are using Weather Display's           //
 // clientraw.txt file as your datafile. If you are not using clientraw.txt  //
 // these parameters will have no affect so you may ignore them.             //
+//    If you are using a clientraw.txt file generated specifically for      //
+//    WeeWX then you will not use these either. WeeWX does all the work.    //
 /****************************************************************************/
 
 // TIME FORMAT
@@ -193,7 +216,6 @@ function define_colors() {
   // off with this parameter. The tradeoff is that your text will not look as
   // good.
   // To turn off TrueType anti-aliasing set "$anti_alias = 'off';
-  $anti_alias = 'on';
 
 } // end function define_colors
 
@@ -346,7 +368,7 @@ function write_banner_big() {
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
-  imagecenteredtext(250, 10, "$title_here", 5, 14, $color2, 0);
+  imagecenteredtext(250, 15, "$title_here", 5, 14, $color2, 0);
   imagecenteredtext(456, 10, "$add_text", 2, 7, $color1, 0);
   imagecenteredtext(250, 35, "$date @ $t_ime", 2, 8, $color2, 0);
   imagecenteredtext(90, 38, "Temp: $temp$degree_units", 5, 14, $color4, 0);
