@@ -1,4 +1,5 @@
 #errorCatcher Echo
+##lang = $lang
 ## Template file for providing data to wxgraphic_6.5
 ## Original source at wayback machine - archive.org
 ## https://web.archive.org/web/20130123181502/http://scripts.anolecomputer.com/download.shtml
@@ -46,15 +47,15 @@
 #if $trend.barometer.raw is not None
     #set $WXG_BAROM_TREND = $trend.barometer.hPa.raw
    #if $WXG_BAROM_TREND >= 2.0
-    #set $WXG_BAROM_TREND_TXT = "Rising_Rapidly"
+    #set $WXG_BAROM_TREND_TXT = $gettext("Rising_Rapidly")
    #else if $WXG_BAROM_TREND >= 0.7
-    #set $WXG_BAROM_TREND_TXT = "Rising_Slowly"
+    #set $WXG_BAROM_TREND_TXT = $gettext("Rising_Slowly")
    #else if $WXG_BAROM_TREND <= -2.0
-    #set $WXG_BAROM_TREND_TXT = "Falling_Rapidly"
+    #set $WXG_BAROM_TREND_TXT = $gettext("Falling_Rapidly")
    #else if $WXG_BAROM_TREND <= -0.7
-    #set $WXG_BAROM_TREND_TXT = "Falling_Slowly"
+    #set $WXG_BAROM_TREND_TXT = $gettext("Falling_Slowly")
    #else
-    #set $WXG_BAROM_TREND_TXT = "Steady"
+    #set $WXG_BAROM_TREND_TXT = $gettext("Steady")
    #end if
 #else
  #set $WXG_BAROM_TREND_TXT = ""

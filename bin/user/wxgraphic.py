@@ -111,6 +111,8 @@ class WXgraphic (SearchList):
             'curr_cond_icon', 'yes')
         self.add_text = self.generator.skin_dict['WXgraphic'].get(
             'additional_text', 'Click for More')
+        self.o_r_d = self.generator.skin_dict['Units']['Ordinates'].get(
+            'directions')
 
         # settings specific to the clientraw.txt file
         self.b_u = self.generator.skin_dict['WXgraphic']['Clientraw'].get(
@@ -137,6 +139,7 @@ class WXgraphic (SearchList):
             loginf("wxg: additional text is %s" % self.add_text)
             loginf("wxg: time format: %s" % self.t_f)
             loginf("wxg: wxg_debug: %s" % self.wxg_debug)
+            loginf("wxg: ordinates: %s" % self.o_r_d)
             #loginf("wxg: barom_units: %s" % self.b_u)
             #loginf("wxg: rain_units: %s" % self.r_u)
             #loginf("wxg: degree units: %s" % self.d_u)

@@ -166,57 +166,76 @@ if ($use_wd_clientraw == '1') {
    } // end else
 
    // figure out a text value for compass direction
+   $direction = explode(", ", $ordinates);
+
    switch (TRUE) {
      case (($winddir >= 349) and ($winddir <= 360)):
-       $winddir = 'N';
+       $winddir = $direction[0];
+       //$winddir = 'N';
      break;
      case (($winddir >= 0) and ($winddir <= 11)):
-       $winddir = 'N';
+       $winddir = $direction[0];
+       //$winddir = 'N';
      break;
      case (($winddir > 11) and ($winddir <= 34)):
-       $winddir = 'NNE';
+       $winddir = $direction[1];
+       //$winddir = 'NNE';
      break;
      case (($winddir > 34) and ($winddir <= 56)):
-       $winddir = 'NE';
+       $winddir = $direction[2];
+       //$winddir = 'NE';
      break;
      case (($winddir > 56) and ($winddir <= 78)):
-       $winddir = 'ENE';
+       $winddir = $direction[3];
+       //$winddir = 'ENE';
      break;
      case (($winddir > 78) and ($winddir <= 101)):
-       $winddir = 'E';
+       $winddir = $direction[4];
+       //$winddir = 'E';
      break;
      case (($winddir > 101) and ($winddir <= 124)):
-       $winddir = 'ESE';
+       $winddir = $direction[5];
+       //$winddir = 'ESE';
      break;
      case (($winddir > 124) and ($winddir <= 146)):
-       $winddir = 'SE';
+       $winddir = $direction[6];
+       //$winddir = 'SE';
      break;
      case (($winddir > 146) and ($winddir <= 169)):
-       $winddir = 'SSE';
+       $winddir = $direction[7];
+       //$winddir = 'SSE';
      break;
      case (($winddir > 169) and ($winddir <= 191)):
-       $winddir = 'S';
+       $winddir = $direction[8];
+       //$winddir = 'S';
      break;
      case (($winddir > 191) and ($winddir <= 214)):
-       $winddir = 'SSW';
+       $winddir = $direction[9];
+       //$winddir = 'SSW';
      break;
      case (($winddir > 214) and ($winddir <= 236)):
-       $winddir = 'SW';
+       $winddir = $direction[10];
+       //$winddir = 'SW';
      break;
      case (($winddir > 236) and ($winddir <= 259)):
-       $winddir = 'WSW';
+       $winddir = $direction[11];
+       //$winddir = 'WSW';
      break;
      case (($winddir > 259) and ($winddir <= 281)):
-       $winddir = 'W';
+       $winddir = $direction[12];
+       //$winddir = 'W';
      break;
      case (($winddir > 281) and ($winddir <= 304)):
-       $winddir = 'WNW';
+       $winddir = $direction[13];
+       //$winddir = 'WNW';
      break;
      case (($winddir > 304) and ($winddir <= 326)):
-       $winddir = 'NW';
+       $winddir = $direction[14];
+       //$winddir = 'NW';
      break;
      case (($winddir > 326) and ($winddir <= 349)):
-       $winddir = 'NNW';
+       $winddir = $direction[15];
+       //$winddir = 'NNW';
      break;
    } // end switch
 

@@ -33,6 +33,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                         'HTML_ROOT': 'wxgraphic',
                         'skin': 'WXgraphic',
                         'enable': 'True',
+                        'lang': 'en',
                         'Units': {
                             'Groups': {
                             },
@@ -144,5 +145,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'skins/WXgraphic/icons/tornado.png',
                     'skins/WXgraphic/icons/windy.gif',
                     'skins/WXgraphic/icons/windy.jpeg',
-                    'skins/WXgraphic/icons/windy.png'])]
+                    'skins/WXgraphic/icons/windy.png',
+                    'skins/WXgraphic/lang/en.conf',
+                    'skins/WXgraphic/lang/de.conf'])]
             )
