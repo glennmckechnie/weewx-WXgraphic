@@ -1,8 +1,10 @@
-**1st Oct 2022**
+**1st & 2nd Oct 2022**
 
 Wrapped up the existing repo and released it as [Stage 1 - Tweaked 'n Prodded, drawing a line in the sand](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.4) v0.6.4
 
 Now moving on to the next set of changes...
+
+Pre-release as [Stage 2: Refined, dusted and rearranged](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.5) subject to change as required. bug fixes, Stage 3 will be direct from the main repo.
 
 If upgrading an existing version of this extension, copy your old config.txt.tmpl, skin.conf and index.php files. They will be over written!
 
