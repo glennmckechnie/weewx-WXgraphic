@@ -1,0 +1,15 @@
+This repo has made a few changes to the original source downloaded from the web archive as https://web.archive.org/web/20130123181502/http://scripts.anolecomputer.com/downloads/wxgraphic_6.3.zip
+
+md5sum wxgraphic_6.3.zip
+8ef840a1151e638b1a2dda2ce2df0ca2  wxgraphic_6.3.zip
+
+It is also available at https://saratoga-weather.org/legacy-scripts/wxgraphic_6.3.zip
+
+md5sum wxgraphic_6.3.zip
+26529d0f481d552984b220aa41631844  wxgraphic_6.3.zip
+
+
+Those files are here as :-
+
+wxgraphic-anolecomputer_6.3.zip
+wxgraphic-saratoga_6.3.zip
