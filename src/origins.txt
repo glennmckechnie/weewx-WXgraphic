@@ -1,4 +1,7 @@
-This repo has made a few changes to the original source downloaded from the web archive as https://web.archive.org/web/20130123181502/http://scripts.anolecomputer.com/downloads/wxgraphic_6.3.zip
+This repo has made a few changes to the original source
+
+
+The original (version 1.0 released on 10/2/2005,  2nd October 2005) authors copy at anolecomputer.com (404) was downloaded from the web archive as https://web.archive.org/web/20130123181502/http://scripts.anolecomputer.com/downloads/wxgraphic_6.3.zip The description page at https://web.archive.org/web/20130105094954/http://scripts.anolecomputer.com/wxgraphic/ describes that version update as 6.3 at 10/25/2008 - 25th August 2008 and is the last one.
 
 md5sum wxgraphic_6.3.zip
 8ef840a1151e638b1a2dda2ce2df0ca2  wxgraphic_6.3.zip

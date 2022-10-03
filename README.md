@@ -1,3 +1,23 @@
+**3rd Oct 2022**
+
+Internationalization: language configuration using WeeWX lang files. See the skins/WXgraphic/lang directory for templates.
+
+Thanks to Hartmut we have a German language file - de.conf
+
+For our other languages, use the spare language file en.conf.x as a template and rename, rework its contents accordingly. If you do one for yourself, it would be appreciated if you sent a copy to upload here.
+
+When using clientraw.txt files, there was a php based conversion process that could be configured to do the job. It has been commented out as we (WeeWX users) don't require it. WeeWX will pass units, groups and do the conversion using its own routines.
+
+On a minor note, I've added the original source files to the repo in source/
+
+[Stage 3: Language, using WeeWX lang files]((https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.6)
+
+
+When using clientraw.txt files, there was a php based unit conversion process that could be configured. It has been commented out as we (WeeWX users) don't require it. WeeWX will pass units, groups using its own routines.
+
+On a minor note, I've added the original source files (wxgraphic-XXX_6.3.zip) to the repo.
+
+
 **1st & 2nd Oct 2022**
 
 Wrapped up the existing repo and released it as [Stage 1 - Tweaked 'n Prodded, drawing a line in the sand](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.4) v0.6.4

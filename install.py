@@ -20,7 +20,7 @@ class WXgraphicInstaller(ExtensionInstaller):
     def __init__(self):
 
         super(WXgraphicInstaller, self).__init__(
-            version='0.6.4',
+            version='0.6.6',
             name='wxgraphic',
             description='Weather Graphic image generator via a php'
                         ' script',

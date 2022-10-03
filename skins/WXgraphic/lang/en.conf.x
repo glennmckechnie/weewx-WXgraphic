@@ -1,6 +1,6 @@
 ###############################################################################
 #  Localization File WXgraphic https://github.com/glennmckechnie/weewx-uradmon#
-#  English                                                                    #
+#  Template                                                                   #
 # Copyright (c) 2018-2021 Tom Keffer <tkeffer@gmail.com> and Matthew Wall     #
 # Copyright (c) 2021 Johanna Karen Roedenbeck                                 #
 #                                                                             #
@@ -9,8 +9,11 @@
 #
 # https://weewx.com/docs/customizing.htm#localization
 
-# Generally want the US system for the English language.
-unit_system = us
+# Optional: 
+# unit_system = us, or metric, or metricwx
+# enabling the unit system here is a coarse approach. You have finer control
+# using groups - the [[[Units]]] [[[[Groups]]]] sections in weewx.conf Either
+# under [[Defaults]] or under your [[skin]]
 
 [Units]
 
@@ -32,8 +35,7 @@ unit_system = us
 [Labels]
 
 [Texts]
-    "Language" = "English"
-    # as per Seasons skin ?
+    "Language" = "Name of your your Language"
     # From config.txt.tmpl
     "Temp:" = "XTemp:"
     "Wind Chill:" = "XWind Chill:"
@@ -46,7 +48,8 @@ unit_system = us
     "Dew Pt:" = "XDew Pt:"
 
     # from wxgraphic_weewx.txt.tmpl
-    "Rising_Rapidly" = "XRising_Rapidly"_
-    "Rising_Slowly" = "XRising_Slowly"
-    "Falling_Slowly" = "XFalling_Slowly"
-    "Steady" = "XSteady"
+    "Rising_Rapidly" = "Xising_Rapidly"_
+    "Rising_Slowly" = "Xising_Slowly"
+    "Falling_Slowly" = "Xalling_Slowly"
+    "Falling_Rapidly" = "Xalling_Rapidly"
+    "Steady" = "Xteady"

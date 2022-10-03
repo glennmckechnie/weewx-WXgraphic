@@ -15,7 +15,7 @@ import weewx.manager
 import weewx.units
 from weewx.cheetahgenerator import SearchList
 
-wxgraphic_version = "0.6.5"
+wxgraphic_version = "0.6.6"
 
 try:
     # Test for new-style weewx logging by trying to import weeutil.logger

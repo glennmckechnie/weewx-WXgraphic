@@ -1,7 +1,8 @@
 <?php
 // ini_set('display_errors',1);
 /******************************************************************************
-* wxgraphic.php v6.5
+* was wxgraphic.php v6.5
+* index.php v0.6.6
 # renamed as index.php for weewx installation - Glenn McKechnie, Sept 2022
 *
 * Weather graphic generator
@@ -116,6 +117,10 @@ if ($use_wd_clientraw == '1') {
         $t_ime = sprintf ("%02d:%02d", $data[29], $data[30]);
    } //end else
 
+   /*
+   //weewx handles all unit labels and unit conversions so this section
+   //is now redundant
+   //
    // convert the temps
    // only necessary if we want Farenheit
    if ($temp_conv == 'F') {
@@ -164,10 +169,11 @@ if ($use_wd_clientraw == '1') {
    else {
         $raintoday = (round($raintoday, $rain_prec));
    } // end else
+   */
 
+   // Remove single quotes around data.
+   $direction = str_replace("'", '', explode(", ", $ordinates));
    // figure out a text value for compass direction
-   $direction = explode(", ", $ordinates);
-
    switch (TRUE) {
      case (($winddir >= 349) and ($winddir <= 360)):
        $winddir = $direction[0];
