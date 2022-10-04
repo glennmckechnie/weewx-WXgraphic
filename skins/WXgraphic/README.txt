@@ -1,3 +1,14 @@
+1st October 2022
+https://github.com/glennmckechnie/weewx-WXgraphic
+
+This is a historic readme. It was written for the original wxgraphic.php v6.3
+It may offer insights for those who wish to know the origins of the project, or
+are looking for insights to its original structure.
+With weewx-WXgraphics and its wee_extension method of installion, this readme is
+surplus
+
+===============================================================================
+
 Weather graphic generator v6.3
 Copyright (C) 2005 Anole Computer Services, LLC
 scripts@anolecomputer.com
