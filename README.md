@@ -188,17 +188,17 @@ Once your safety net is in place and you're ready to edit the fragile stuff, you
 Once that is done you can go to the config.txt file on your webserver - weewx/wxgraphic/config.txt - and edit that file to your hearts content. Disabling the template prevents the config.txt file from being overwritten.
 
 Doing it this way allows for the rapid testing of any changes.
-
+```
 Make change to config.txt
 Refresh the image from your browser.
 Re-edit the file.
 Rinse.
 Repeat.
 Finish.
+```
+Once you have the image displaying as you want then go back to the skins/WXgraphic/config.txt.tmpl file and duplicate the changes you made to config.txt  (now would be a good time to majke a duplicate of config.txt, before it gets overwritten). Once that is done then reinstate the template generation (remove the comma you put in) and make sure that the edits you made to config.txt, have been duplicate correctly in config.txt.tmpl and the regenerated config.txt works as intended. (compare the new with the copy you made before).
 
-Once you have the image displaying as you want then go back to the skins/WXgraphic/config.txt.tmpl file and duplicate those changes you made to config.txt Once that is done then reinstate the template generation and make sure that those changes you made still work as intended.
-
-Once you have a working config.txt file that is being generated from config.txt.tmpl, whether you disable or enable the template is a matter of choice. With this skin nothing changes after you settle on a working version. However, later on may you want to edit one of the settings in skin.conf and you will need it running then. Your choice, you decide.
+Once you have a working config.txt file that is being generated from config.txt.tmpl; whether you disable or enable the template is a matter of choice. With this skin nothing changes after you settle on a working version. However, later on may you want to edit one of the settings in skin.conf and you will need the config.txt.tmpl running then. Your choice, you decide.
 
 
 Text locations, colors etc can all be configured. The key for (x,y) is in the following example lines, in each function
@@ -226,26 +226,27 @@ The following fonts are include in the installation. Some layout co-ordinates (t
 
 A call from a browser to a link like [http://203.213.243.61/weewx/wxgraphic/](http://203.213.243.61/weewx/wxgraphic/) should show an image. If my server is up and running then that link should show a live example. No guarantees it will be up and running though - ISP availability and all that.
 
-After installation there will be a directory created on your webserver named wxgraphic (.../weewx/wxgraphic). Directly under that will be 20 (currently) visible files and 3 directories.
+After installation there will be a directory created on your webserver named wxgraphic (.../weewx/wxgraphic). Directly under that will be 22 (currently) visible files and 4 directories.
 
-A default installation (no changes to skin.conf) requires default.png, index.php, PHP_verify.php, config.txt, and DATA/wxgraphic_weewx.txt to be present and correct.
+A default installation (no changes to skin.conf) requires default.png, index.php, PHP_verify.php, config.txt, and DATA/wxgraphic_weewx.txt to be present and correct. If you have a version (v0.6.5) with languages, then lang/ as well
 
 The PHP_verify.php file is used to test your webservers php installation. When accessed by your browser it should give you an indication whether you have php and GD enabled. If it returns just garbage text (its contents are php code) then php is not installed and you need to install php and php-gd.
+The PHP_verify.php file can be removed from the skin (and www/html/weewx/wxgraphic) directories once it has been used. It serves an important task, but only once.
 
 When that is successful we need to check that the 2 files we generate from the templates - config.txt and DATA/wxgraphic_weewx.txt are correct.
 
-wxgraphic_weewx.txt (generated from .../skins/WXgraphic/DATA/wxgraphic_weewx.txt.tmpl) should look something like the example [wxgraphic_weewx.txt](/skins/WXgraphic/examples/wxgraphic_weewx.txt). That example shows the format and fields that you are expecting. There are 16 columns, one of which is blank - ''
+wxgraphic_weewx.txt (generated from .../skins/WXgraphic/DATA/wxgraphic_weewx.txt.tmpl) should look something like the example [wxgraphic_weewx.txt](/skins/WXgraphic/examples/wxgraphic_weewx.txt). That example shows the format and fields that you are expecting. There are 16 columns, one of which is blank - '' or 19 columns for a later version. As the columns are now space separated, count the spaces to get the column result. One of them may show up as 2 spaces / columns (curr_cond_icon)
 
 config.txt (generated from skins/WXgraphic.config.txt.tmpl) should appear similar to the contents of [config.txt](skins/WXgraphic/examples/config.txt). Check that the data_file_path line
 
 eg:- ```$data_file_path =  '/your_webservers_path/weewx/wxgraphic/DATA/wxgraphic_weewx.txt'```
 
-returns something that looks like the example above - from the command line eg:- 
+returns something that looks like the example above - from the command line (the later version has 4 unit columns at the end of it) eg:- 
 ``` sudo cat /your_webservers_path/wxgraphic/DATA/wxgraphic_weewx.txt```
 
 ??? More to come, as they arise
 
 ## Problems, Help ?
 
-Any problems, fixes, suggestions - raise an [issue](https://github.com/glennmckechnie/weewx-WXgraphic/issues) on github
+Any problems, fixes, suggestions; lang files - raise an [issue](https://github.com/glennmckechnie/weewx-WXgraphic/issues) on github
 
