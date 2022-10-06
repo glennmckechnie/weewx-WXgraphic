@@ -1,3 +1,5 @@
+![custom.png](skins/WXgraphic/examples/MessmateFarmCustom.png)
+
 **3rd Oct 2022**
 
 Internationalization: language configuration using WeeWX lang files. See the skins/WXgraphic/lang directory for templates.
