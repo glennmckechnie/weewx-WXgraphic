@@ -92,19 +92,28 @@ It is still a php script and it can create one of the following images (of your 
 2. The installer will also take care of generating a template file.
 3. You still need to know how to include an image file on a web page!
 
-The original notes in the [skins/WXgraphic/README.txt](https://github.com/glennmckechnie/weewx-WXgraphic/blob/main/skins/WXgraphic/README.txt) file are still relevant to the configuration of the script and its various options, along with its use (Using The Script) etc.
-The installation of the script should be straight forward as it uses wee_extension and picks up some default values (paths) from your WeeWX installation. Some choices have already been made (Metric labels) and others only you can supply (Image Title)
+The original notes in the [skins/WXgraphic/README.txt](https://github.com/glennmckechnie/weewx-WXgraphic/blob/main/skins/WXgraphic/README.txt) file are still useful for understanding the configuration of the script and its various options, along with its use (Using The Script...) but the weewx installer now takes precedence.
+    
+Since v0.6.4 it is now being managed by wee_extension so your weewx preferences are transferred to the config file, and can be changed in the same manner as for any weewx skin - via skin.conf or your weewx.conf settings. With v0.6.6, configuration is further reduced and weewx language settings are available, or configurable.
 
-The script still works for the original file formats, eg:- clientraw.txt 
-I don't have a working installation for that so some pointers for that files location will be helpful but you can use the data_file_path  = '' option in skin.conf to point to it.
+The layout, and color selection still require manual editing of the config.txt.tmpl file, and that's where the README.txt still proves itself useful, or the **Editing section** below.
+    
+If you wish to use clientraw.txt, see the [[Clientraw]] section within the skin.conf file.
 
 Otherwise this simple weewx skin will create a template that generates a suitable file to feed wxgraphic/index.php and that will be installed on your WeeWX  server.
-Currently, the icons are not available from this template. That appears to be dependent on VDS, clientraw.txt. We do get a day, night graphic though!
-It could possibly work with a weewx-forecast installation?? But I don't have one, nor a clientraw.txt file to test it on (although it's available for WeeWX as part of a skin.)
+    
+Currently, the full range of icons are not used by this template. That appears to be dependent on a true VDS or a clientraw.txt file. We do get a day, night graphic though!
+It could possibly work with a weewx-forecast installation? But I don't have one configured to try it.
 
 php is unforgiving with errors. Most times it's a blank screen if you fubar something. apache2/error.log can give you a hint. Being ultra careful with editing the php file is the safest option, and backups.
+    
+A display_errors line has been added to the start of index.php. Uncomment it to get some feedback if you go down the manual php configuration path.
+    
+```    
+// ini_set('display_errors',1);
+```
 
-Within the index.php & config.txt scripts there is a new option that offers a 'write_custom' - 'custom' configuration. Use that if you really want to go hard at the modifications, and still retain the original banners, avatars etc.
+Within the index.php & config.txt scripts there is an option that offers a 'write_custom' - 'custom' configuration. Use that if you really want to go hard at the modifications, and still retain the original banners, avatars etc.
 
 Any of the images can be replaced with an image of your choosing. The WeeWX installation uses the *.png type files by default.
 
@@ -137,13 +146,15 @@ There is a file named PHP_verify.php within the new (www)wxgraphic server direct
 
 When the weewx report cycle runs it will copy the www/wxgraphic directory to your webserver once, and once only. It will be named wxgraphic and will be in your weewx root directory (weewx/wxgraphic) by default.
 
-   5. Configure the php script
-
-Within that wxgraphic directory is a file named config.txt  That will require editing to change the configuration to suit your taste, set up.    
-You have your choice of banner, banner_big, avatar or if nothing is selected, a default image. Only the *.png files are copied over. If you want the other formats (jpeg, gif) thats a manual job for you to perform.
+   5. Configure the scripts output
+    
+The main configuration options are done by editing skin.conf
+    
+You have your choice of banner, banner_big, avatar or if nothing is selected, a default image sized at 150x150. The default image type is*.png The other types are jpeg and gif
 
 The data to feed wxgraphic will be transferred at each weewx report cycle to (www) wxgraphic/DATA/weewx-wxgraphic.txt via the skins/WXgraphic/DATA/weewx-graphic.txt.tmpl
-Some editing is required within the skin.conf file.
+    
+If you wish to use clientraw.txt then configure the [[Clientraw]] section within the skin.conf file.
 
 The original script wxgraphic.php has been renamed as index.php. However, this installation does not install every file from the wxgraphic_6.3 source. They are available in the master file , or the github repo if you want them.
 
@@ -228,10 +239,10 @@ A call from a browser to a link like [http://203.213.243.61/weewx/wxgraphic/](ht
 
 After installation there will be a directory created on your webserver named wxgraphic (.../weewx/wxgraphic). Directly under that will be 22 (currently) visible files and 4 directories.
 
-A default installation (no changes to skin.conf) requires default.png, index.php, PHP_verify.php, config.txt, and DATA/wxgraphic_weewx.txt to be present and correct. If you have a version (v0.6.5) with languages, then lang/ as well
+A default installation (no changes to skin.conf) requires default.png, index.php, PHP_verify.php, config.txt, and DATA/wxgraphic_weewx.txt to be correct and available in your webservers weewx/wxgraphics directory. If you have a version (v0.6.5) with languages, then lang/ as well
 
 The PHP_verify.php file is used to test your webservers php installation. When accessed by your browser it should give you an indication whether you have php and GD enabled. If it returns just garbage text (its contents are php code) then php is not installed and you need to install php and php-gd.
-The PHP_verify.php file can be removed from the skin (and www/html/weewx/wxgraphic) directories once it has been used. It serves an important task, but only once.
+The PHP_verify.php file can be removed from the skin (and www/html/weewx/wxgraphic) directories once it has been used. It serves an important task, but only once (remove it from the skins/WXgraphic directory as well.
 
 When that is successful we need to check that the 2 files we generate from the templates - config.txt and DATA/wxgraphic_weewx.txt are correct.
 
