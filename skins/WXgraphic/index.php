@@ -2,7 +2,7 @@
 // ini_set('display_errors',1);
 /******************************************************************************
 * was wxgraphic.php v6.5
-* index.php v0.6.6
+* index.php _version = v0.6.7
 # renamed as index.php for weewx installation - Glenn McKechnie, Sept 2022
 *
 * Weather graphic generator
@@ -313,7 +313,10 @@ if ($use_wd_clientraw == '1') {
 // into an array
 // wxgraphic_weewx.txt
 else {
-     $data = explode(" ", $dataraw);
+     # was ',' due to decimal comma issue
+     # then ' ' but us AMPM format is '00:00:00 AM'
+     # so try a ';'  -- 3rd times the charm?
+     $data = explode("$de_limiter", $dataraw);
      // clean up and define the data points
      $t_ime = trim($data[0]);
      $date = trim($data[1]);

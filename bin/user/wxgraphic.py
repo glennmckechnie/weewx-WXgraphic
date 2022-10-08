@@ -15,7 +15,7 @@ import weewx.manager
 import weewx.units
 from weewx.cheetahgenerator import SearchList
 
-wxgraphic_version = "0.6.6"
+wxgraphic_version = "0.6.7"
 
 try:
     # Test for new-style weewx logging by trying to import weeutil.logger
@@ -76,8 +76,8 @@ class WXgraphic (SearchList):
 
         # local (skin) debug switch "2" or weewx.debug
         # 5 is for release testing only and can safely be ignored by users
-        self.wxg_debug = int(self.generator.skin_dict['WXgraphic'].get(
-                'wxg_debug', '0'))
+        self.wxg_debug = int(self.generator.skin_dict['WXgraphic'] \
+                ['Extras'].get('wxg_debug', '0'))
         if weewx.debug >= 1 or self.wxg_debug >= 1:
             loginf('version is %s' % wxgraphic_version)
 
@@ -87,6 +87,9 @@ class WXgraphic (SearchList):
             data_path = self.generator.config_dict['StdReport']["WXgraphic"] \
                 .get('HTML_ROOT', '/var/www/html/weewx/wgraphic')
             self.d_f_p = (data_path+"/DATA/wxgraphic_weewx.txt")
+
+        self.d_s_v = self.generator.skin_dict['WXgraphic']['Extras'].get(
+            'delimiter_dsv', ';')
 
         self.title_here = self.generator.skin_dict['WXgraphic'].get(
             'weather_station')
@@ -129,6 +132,7 @@ class WXgraphic (SearchList):
         if self.wxg_debug >= 5:  # sanity check for releases - safely ignored.
             loginf("wxg: image_type is %s" % self.img_style)
             loginf("wxg: data_file_path is %s" % self.d_f_p)
+            loginf("wxg: delimiter: %s" % self.d_s_v)
             loginf("wxg: image_format is %s" % self.img_type)
             loginf("wxg: font_file is %s" % self.f_file)
             loginf("wxg: anti_alias is %s" % self.ttf_on)
@@ -140,7 +144,7 @@ class WXgraphic (SearchList):
             loginf("wxg: time format: %s" % self.t_f)
             loginf("wxg: wxg_debug: %s" % self.wxg_debug)
             loginf("wxg: ordinates: %s" % self.o_r_d)
-            #loginf("wxg: barom_units: %s" % self.b_u)
-            #loginf("wxg: rain_units: %s" % self.r_u)
-            #loginf("wxg: degree units: %s" % self.d_u)
-            #loginf("wxg: wind units: %s" % self.w_u)
+            # loginf("wxg: barom_units: %s" % self.b_u)
+            # loginf("wxg: rain_units: %s" % self.r_u)
+            # loginf("wxg: degree units: %s" % self.d_u)
+            # loginf("wxg: wind units: %s" % self.w_u)

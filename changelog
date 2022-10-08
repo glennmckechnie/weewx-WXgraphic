@@ -1,3 +1,16 @@
+**8th Oct 2022**
+v0.6.7
+
+It seems I made a poor choice changing the delimiter in wxgraphic-weewx.txt to
+a space. That doesn't play well with the AM PM time formats.
+
+It's now changed it to a semi-colon ';' **with** the option in
+WXgraphic/skin.conf to change it again - to something of your choosing.
+
+Third times the charm?  !
+
+
+
 **3rd Oct 2022**
 v0.6.6
 

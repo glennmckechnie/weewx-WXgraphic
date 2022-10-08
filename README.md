@@ -1,5 +1,14 @@
 ![custom.png](skins/WXgraphic/examples/MessmateFarmCustom.png)
 
+**8th Oct 2022**
+v0.6.7
+
+It seems I made a poor choice changing the delimiter in wxgraphic-weewx.txt to a space. That doesn't play well with the AM PM time formats.
+
+Changed it to a semi-colon ';' **with** the option in WXgraphic/skin.conf to change it again - to one of your choosing.
+
+Third times the charm?  !
+
 **3rd Oct 2022**
 
 Internationalization: language configuration using WeeWX lang files. See the skins/WXgraphic/lang directory for templates.
@@ -16,51 +25,7 @@ When using clientraw.txt files, there was a php based unit conversion process th
 
 On a minor note, I've added the original source files (wxgraphic-XXX_6.3.zip) to the repo.
 
-
-**1st & 2nd Oct 2022**
-
-Wrapped up the existing repo and released it as [Stage 1 - Tweaked 'n Prodded, drawing a line in the sand](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.4) v0.6.4
-
-Now moving on to the next set of changes...
-
-Pre-release as [Stage 2: Refined, dusted and rearranged](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.5) subject to change as required. bug fixes, Stage 3 will be direct from the main repo.
-
-If upgrading an existing version of this extension, copy your old config.txt.tmpl, skin.conf and index.php files. They will be over written!
-
-The defaults in skin.conf have been refined. Those that are relevant only to clientraw.txt have been moved to their own section.
-
-WXgraphic now picks up the units via weewx [tags](https://weewx.com/docs/customizing.htm#Tag_$unit) which are set in weewx.conf. There is an empty section in [StdReports][WXgraphics] for the unit definitions but the default ones (for all skins) will apply regardless of the data file being used.
-
-
-```
-[StdReport]
-    [[WXgraphic]]
-         <can be set within here to overide the default secion below>
-
-    [[Defaults]]
-        [...]
-        [[[Units]]]
-            [...]
-            [[[[Groups]]]]
-                <or these will take precedence as they are the defaults>
-```
-
-It also picks up the Station name provided in weewx.conf, but retains the option in skin.conf to change it to something else - probably something shorter!
-
-The degrees symbol is back! Because of the difficulty to get the Cheetah Generator to parse the degree symbol '°' that has now been moved to index.php and renders correctly while it remains as a <B0> hex code.
-
-
-Thanks to Harmut for the note on this:
- Change windchill heatindex values in skin.conf to whole numbers purely to avoid problems when suppling a decimal point when a decimal comma is required.
-
-Space separated weewx-wxgraphic.txt file:
- When index.php extracts the $baromtrendwords we now replace the ```'_'``` with a space, as it should be!
-
-Add a blank index.html in the remaining directories - a low level security step.
-
-Fix anti_alias failure when using ttf fonts, those other than the GD default
-
-PHP Notice:  Undefined variable: anti_alias in /tmp/var/www/html/weewx/wxgraphic/index.php
+See changelog for older notices
 
 ## What is wxgraphic?
 
