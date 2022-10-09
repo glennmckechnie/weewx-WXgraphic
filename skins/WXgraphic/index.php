@@ -64,8 +64,9 @@ if ($degree_label === 'degree_F') {
 // the WD flag for those specific routines to be executed.
 if (preg_match('|clientraw.txt|', $data_file_path)){
    $use_wd_clientraw = '1';
-}else{ //end if
-   $use_wd_clientraw = '0';}
+}else{
+   $use_wd_clientraw = '0';
+} //end if
 
 // get the data file. If we don't get it the first time we'll make two
 // more attempts then output an image that indicates we don't have any
@@ -306,7 +307,7 @@ if ($use_wd_clientraw == '1') {
    $icon_array[33] = "./icons/windy.$image_format";               // imagewindy.visible
    $icon_array[34] = "./icons/day_partly_cloudy.$image_format";   // stopped rainning
 
-} // end if
+} // end if for  ($use_wd_clientraw == '1')
 // that's all the WD clientraw.txt specific stuff
 
 // and if we're not using WD clientraw.txt we just need put the data
@@ -341,12 +342,22 @@ else {
      $sunset_epoch = strtotime("$sunset");
      $time_epoch = strtotime("$t_ime");
 
-     if ($time_epoch >= $sunset_epoch or $time_epoch <= $sunrise_epoch) {
+     # check if almanac is supported - do we have valid times?
+     if ( $sunrise == '0' ) {
+         # in config.txt we need/use this to ignore the next step
+         $curr_cond_icon = 'no';
+         # but we need to feed it something to stop complaints!
+         # Yes, a it's workaround
          $daynight = 'night';
-     } // end if
-     else {
-          $daynight = 'day';
-     } // end else
+         # $winddir = $curr_cond_icon; # sanity check !
+     }else{
+         if ($time_epoch >= $sunset_epoch or $time_epoch <= $sunrise_epoch) {
+             $daynight = 'night';
+         }
+         else {
+             $daynight = 'day';
+         }
+     };
 
      // CURRENT CONDITIONS ICONS FOR VWS
      // create array for icons.
@@ -557,7 +568,7 @@ imagedestroy($baseimg);
 // this has to be done after the image is created
 define_colors();
 
-// now let's create the image
+// now let's create the icon image
 switch (TRUE){
   case ($image_type == "banner"):
        // put the icon on the background

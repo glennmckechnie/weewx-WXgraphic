@@ -1,6 +1,6 @@
 #errorCatcher Echo
 ##lang = $lang
-## Template file for providing data to wxgraphic_6.5
+## Template file for providing data to wxgraphic.php _version = v0.6.7
 ## Original source at wayback machine - archive.org
 ## https://web.archive.org/web/20130123181502/http://scripts.anolecomputer.com/download.shtml
 ## Also at Saratoga-Weather.org
@@ -66,8 +66,13 @@
 #set $WXG_WINDGUST = $current.windGust.nolabel("%.1f","")
 #set $WXG_WINDDIR = $current.windDir.ordinal_compass.replace("CALM","N")
 #set $WXG_DAYRAIN = $day.rain.sum.nolabel("%.1f","")
-#set $WXG_SUNRISE = $almanac.sun.rise.format("%H:%M:%S")
-#set $WXG_SUNSET = $almanac.sun.set.format("%H:%M:%S")
+#if $almanac.hasExtras
+ #set $WXG_SUNRISE = $almanac.sun.rise.format("%H:%M:%S")
+ #set $WXG_SUNSET = $almanac.sun.set.format("%H:%M:%S")
+#else
+ #set $WXG_SUNRISE = "0"
+ #set $WXG_SUNSET = "0"
+#end if
 #set $WXG_TEMPUNIT = $unit.label.outTemp.strip()
 #set $WXG_WINDUNIT = $unit.label.windSpeed.strip().replace("/", "")
 #set $WXG_BAROMUNIT = $unit.label.barometer.strip()
