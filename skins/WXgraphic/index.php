@@ -75,11 +75,11 @@ if (preg_match('|clientraw.txt|', $data_file_path)){
 // than a while loop.
 @$dataraw = file_get_contents($data_file_path);
 if (empty ($dataraw)) {
-    sleep(2);
+    sleep(1);
     @$dataraw = file_get_contents($data_file_path);
 } // end if
 if (empty ($dataraw)) {
-    sleep(2);
+    sleep(1);
     @$dataraw = file_get_contents($data_file_path);
 } // end if
 if (empty ($dataraw)) {
@@ -172,7 +172,7 @@ if ($use_wd_clientraw == '1') {
    } // end else
    */
 
-   // Remove single quotes around data.
+   // Remove single quotes around labels from weewx.
    $direction = str_replace("'", '', explode(", ", $ordinates));
    // figure out a text value for compass direction
    switch (TRUE) {
@@ -307,7 +307,7 @@ if ($use_wd_clientraw == '1') {
    $icon_array[33] = "./icons/windy.$image_format";               // imagewindy.visible
    $icon_array[34] = "./icons/day_partly_cloudy.$image_format";   // stopped rainning
 
-} // end if for  ($use_wd_clientraw == '1')
+} // end if : for clientraw (True)
 // that's all the WD clientraw.txt specific stuff
 
 // and if we're not using WD clientraw.txt we just need put the data
@@ -592,7 +592,7 @@ switch (TRUE){
        // write the text onto the 100X100 avatar
        write_avatar();
   break;
-  case ($image_type == "custom"):
+  case ($image_type == "custom"): // new type; can resize to suit the user
        if (isset($icon)) {
           imagecopyresampled($img, $icon, $avatar_icon_x, $avatar_icon_y, 0, 0, 25, 25, 25, 25);
       } // end if
@@ -624,7 +624,7 @@ switch (TRUE) {
   break;
 } // end switch 
 
-// get rid of the image since we don't need it in memory any more. 
+// get rid of the image since we don't need it in memory any more.
 // don't need any memory leaks taking down the server
 imagedestroy($img);
 if (isset($icon)){
@@ -643,6 +643,7 @@ if (isset($icon)){
 // $ttfsize = font size for ttf fonts. Use just like you would in a word processor
 // $color = color as defined in the allocate colors section below
 // $angle = for ttf fonts, determines the angle for the text.
+// imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle)
 function imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle) {
   global $font_file, $img, $anti_alias ;
   // if FreeType is not supported OR $font_file is set to none
@@ -693,7 +694,7 @@ function create_base_image() {
         break;
       } // end switch
   } // end if
-  else {
+  else { // keep old behaviour - fallback to default.
        switch (TRUE) {
          case ($image_format == 'gif') :
               $baseimg = imagecreatefromgif("default.$image_format");
@@ -730,16 +731,21 @@ function nodataimage ($no_data_text1, $no_data_text2) {
   define_colors();
 
   //write the text onto the image
+  //imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle)
   switch (TRUE) {
-    case empty($image_type):
-        imagecenteredtext(75, 65, "$no_data_text1", 5, 12, $color1, 0); 
-        imagecenteredtext(75, 85, "$no_data_text2", 5, 12, $color1, 0); 
+    case (empty($image_type) or ($image_type == "default")):
+        imagecenteredtext(75, 65, "$no_data_text1", 5, 12, $color1, 0);
+        imagecenteredtext(75, 85, "$no_data_text2", 5, 12, $color1, 0);
+    break;
+    case ($image_type == "avatar"):
+        imagecenteredtext(50, 45, "$no_data_text1", 3, 10, $color1, 0);
+        imagecenteredtext(50, 65, "$no_data_text2", 3, 10, $color1, 0);
     break;
     case ($image_type == "banner"):
-         imagecenteredtext(234, 35, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0); 
+         imagecenteredtext(234, 35, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0);
     break;
-    case ($image_type == "banner_big"):
-         imagecenteredtext(250, 45, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0); 
+    case (($image_type == "banner_big") or ($image_type == "custom")):
+         imagecenteredtext(250, 45, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0);
     break;
   } // end switch
 
@@ -797,7 +803,7 @@ function MMtoINCHES($value, $precision) {
   global $rain_prec;
   return round($value = (.0393700787 * $value),$precision);
 } // end function MMtoINCHES
- 
+
 /************* End of Function Definitions ****************/
 
 ?>
