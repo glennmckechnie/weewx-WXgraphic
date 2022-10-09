@@ -59,6 +59,7 @@ class WXgraphicInstaller(ExtensionInstaller):
                     'skins/WXgraphic/custom.jpeg',
                     'skins/WXgraphic/custom.png',
                     'skins/WXgraphic/config.txt.tmpl',
+                    'skins/WXgraphic/config.txt.tmpl.no_lang',
                     'skins/WXgraphic/default.gif',
                     'skins/WXgraphic/default.jpeg',
                     'skins/WXgraphic/default.png',

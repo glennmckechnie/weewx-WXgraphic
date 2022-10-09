@@ -1,5 +1,14 @@
 ![custom.png](skins/WXgraphic/examples/MessmateFarmCustom.png)
 
+**9th Oct 2022**
+v0.6.7
+
+If you have weewx version 4.6.0 or greater then the languages feature (lang) will work for you.
+If you have a version older than that you will need to use config.txt.tmpl.no_lang, after you rename then replace the existing config.txt.tmpl
+
+If you haven't installed the optional [extended almanac](https://weewx.com/docs/customizing.htm#Almanac) for WeeWX, you won't get sunrise nor sunset data. That means the day/night icon cannot be calculated, no matter how you set the skin.conf variable curr_cond_icon.
+The script now ignores that fatal error and displays an image without the added icons.
+
 **8th Oct 2022**
 v0.6.7
 
@@ -10,6 +19,7 @@ Changed it to a semi-colon ';' **with** the option in WXgraphic/skin.conf to cha
 Third times the charm?  !
 
 **3rd Oct 2022**
+
 
 Internationalization: language configuration using WeeWX lang files. See the skins/WXgraphic/lang directory for templates.
 
