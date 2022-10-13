@@ -15,7 +15,7 @@ import weewx.manager
 import weewx.units
 from weewx.cheetahgenerator import SearchList
 
-wxgraphic_version = "0.6.7"
+wxgraphic_version = "0.6.8"
 
 try:
     # Test for new-style weewx logging by trying to import weeutil.logger
@@ -129,6 +129,82 @@ class WXgraphic (SearchList):
         self.t_f = self.generator.skin_dict['WXgraphic']['Clientraw'].get(
             'time_format', '24HR')
 
+        self.hex_title = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('title_color', '#008000')
+        self.hex_text = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('text_color','#ff0000')
+        self.hex_date = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('date_color', '#0000ff')
+        self.hex_temp = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('temp_color', '#000000')
+        self.hex_hum = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('hum_color', '#000000')
+        self.hex_heat = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('heat_color', '#ff0000')
+        self.hex_chill = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('chill_color', '#0000ff')
+        self.hex_wind = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('wind_color', '#000000')
+        self.hex_gust = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('gust_color', '#000000')
+        self.hex_rain = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('rain_color', '#0000ff')
+        self.hex_dew = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('dew_color', '#000000')
+        self.hex_barom = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('barom_color', '#000000')
+
+        self.ftt_title = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('title_font_tt', '14')
+        self.ftt_text = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('text_font_tt','7')
+        self.ftt_date = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('date_font_tt', '8')
+        self.ftt_temp = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('temp_font_tt', '14')
+        self.ftt_hum = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('hum_font_tt', '11')
+        self.ftt_heat = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('heat_font_tt', '8')
+        self.ftt_chill = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('chill_font_tt', '8')
+        self.ftt_wind = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('wind_font_tt', '11')
+        self.ftt_gust = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('gust_font_tt', '8')
+        self.ftt_rain = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('rain_font_tt', '14')
+        self.ftt_dew = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('dew_font_tt', '11')
+        self.ftt_barom = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('barom_font_tt', '8')
+
+        self.fgd_title = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('title_font_gd', '5')
+        self.fgd_text = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('text_font_gd','2')
+        self.fgd_date = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('date_font_gd', '2')
+        self.fgd_temp = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('temp_font_gd', '5')
+        self.fgd_hum = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('hum_font_gd', '5')
+        self.fgd_heat = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('heat_font_gd', '2')
+        self.fgd_chill = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('chill_font_gd', '2')
+        self.fgd_wind = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('wind_font_gd', '5')
+        self.fgd_gust = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('gust_font_gd', '2')
+        self.fgd_rain = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('rain_font_gd', '5')
+        self.fgd_dew = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('dew_font_gd', '5')
+        self.fgd_barom = self.generator.skin_dict['WXgraphic'] \
+                ['PHPGenerator'].get('barom_font_gd', '2')
+
+
         if self.wxg_debug >= 5:  # sanity check for releases - safely ignored.
             loginf("wxg: image_type is %s" % self.img_style)
             loginf("wxg: data_file_path is %s" % self.d_f_p)
@@ -144,7 +220,7 @@ class WXgraphic (SearchList):
             loginf("wxg: time format: %s" % self.t_f)
             loginf("wxg: wxg_debug: %s" % self.wxg_debug)
             loginf("wxg: ordinates: %s" % self.o_r_d)
-            # loginf("wxg: barom_units: %s" % self.b_u)
-            # loginf("wxg: rain_units: %s" % self.r_u)
-            # loginf("wxg: degree units: %s" % self.d_u)
-            # loginf("wxg: wind units: %s" % self.w_u)
+            # loginf("wxg: barom: %s rain: %s degree: %s wind: %s" % (self.b_u, self.r_u, self.d_u,self.w_u))
+            loginf("wxg: title %s : text %s : temp : %s date %s : rain %s" % (self.hex_title, self.hex_text, self.hex_temp, self.hex_date, self.hex_rain))
+            loginf("wxg: rain %s : heat %s : chill : %s wind %s " % (self.hex_rain, self.hex_heat, self.hex_chill, self.hex_wind))
+            loginf("wxg: dew %s hum %s gust %s barom %s" % (self.hex_dew, self.hex_hum, self.hex_gust, self.hex_barom))

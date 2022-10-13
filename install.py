@@ -20,7 +20,7 @@ class WXgraphicInstaller(ExtensionInstaller):
     def __init__(self):
 
         super(WXgraphicInstaller, self).__init__(
-            version='0.6.6',
+            version='0.6.8',
             name='wxgraphic',
             description='Weather Graphic image generator via a php'
                         ' script',
@@ -43,6 +43,7 @@ class WXgraphicInstaller(ExtensionInstaller):
             },
             files=[('bin/user', ['bin/user/wxgraphic.py']),
                    ('skins/WXgraphic', [
+                    'skins/WXgraphic/remove-gettext.sh',
                     'skins/WXgraphic/skin.conf',
                     'skins/WXgraphic/DATA/wxgraphic_weewx.txt.tmpl',
                     'skins/WXgraphic/DATA/index.html',

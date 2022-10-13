@@ -2,7 +2,7 @@
 ##lang="$lang"
 <?php
 /**************************************************/
-/** Weather graphic generator _version = v0.6.7  **/
+/** Weather graphic generator _version = v0.6.8  **/
 /**          User Configuration                  **/
 /**************************************************/
 // 02/2018 Glenn McKechnie alternatives to the 'default' type
@@ -107,6 +107,10 @@ $banner_icon_y = '2';
 // $banner_big_icon_y: y coordinate on banner_big of the upper left most pixel of icon
 $banner_big_icon_x = '2';
 $banner_big_icon_y = '2';
+// $custom_icon_x: x coordinate on custom of the upper left most pixel of icon
+// $custom_icon_y: y coordinate on custom of the upper left most pixel of icon
+$custom_icon_x = '2';
+$custom_icon_y = '2';
 // $avatar_icon_x: x coordinate on avatar of the upper left most pixel of icon
 // $avatar_icon_y: y coordinate on avatar of the upper left most pixel of icon
 $avatar_icon_x = '2';
@@ -126,6 +130,10 @@ $avatar_icon_y = '2';
 // for AM/PM use $time_format = 'AMPM';
 // for 24 hour use $time_format = '24HR';
 $time_format = '$t_f';
+
+// FIXME  index.php still requires this for clientraw
+
+$wind_prec = '1';
 
 /****************************************************************************
 // weewx handles all unit labels and unit conversions so this this section
@@ -154,7 +162,10 @@ $time_format = '$t_f';
 // determines the number of decimal places
 // if "$wind_conv = 'KTS'" above, $wind_prec will only be effective at 1 or 0
 // see README.txt for a detailed explanation
-//$wind_prec = '1';
+
+// FIXME  index.php still requires this for clientraw
+
+$wind_prec = '1';
 
 // BAROMETRIC PRESSURE CONVERSION:
 // barometric pressure conversion units
@@ -195,16 +206,68 @@ $time_format = '$t_f';
 // red = red component 0-255
 // green = green component 0-255
 // blue = blue component 0-255
+// colors are now sourced from WeeWxs skins/WXgraphics/skin.conf file
+// and apply to all images.
+// fonts also are also sourced from skin.conf but are only applied to the
+// custom image.
 
+function convert_RGB ($hex_str) {
+   // https://www.php.net/manual/en/function.imagecolorallocate.php #4
+   global $red, $green, $blue;
+
+    # handles both "#00ff00" and 0x00ff00 strings from skin.conf
+    $i_nt = hexdec($hex_str);
+    $d_ec = array ("R" => 0xFF & ($i_nt >> 0x10),
+                   "G" => 0xFF & ($i_nt >> 0x8),
+                   "B" => 0xFF & $i_nt);
+    // https://www.php.net/manual/en/language.types.array.php
+    // https://www.skillsugar.com/how-to-use-associative-arrays-in-php
+    $red = $d_ec['R'];
+    $green = $d_ec['G'];
+    $blue = $d_ec['B'];
+}
 function define_colors() {
-  global $img, $color1, $color2, $color3, $color4, $color5, $trans_color,
-         $anti_alias;
 
-  $color1 = imagecolorallocate($img,255,0,0);      // RED
+  global $img, $title_color, $text_color, $date_color, $temp_color,
+         $hum_color, $heat_color, $chill_color, $wind_color,
+         $gust_color, $rain_color, $dew_color, $barom_color, $trans_color,
+         $anti_alias, $red, $green, $blue, $warn_color;
+  // for custom, banner_big
+  convert_RGB ("$hex_title");
+  $title_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_text");
+  $text_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_date");
+  $date_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_temp");
+  $temp_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_hum");
+  $hum_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_heat");
+  $heat_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_chill");
+  $chill_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_wind");
+  $wind_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_gust");
+  $gust_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_rain");
+  $rain_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_dew");
+  $dew_color = imagecolorallocate($img,$red,$green,$blue);
+  convert_RGB ("$hex_barom");
+  $barom_color = imagecolorallocate($img,$red,$green,$blue);
+
+  // for default, banner, avatar.
+  /*$color1 = imagecolorallocate($img,255,0,0);      // RED
   $color2 = imagecolorallocate($img,0,128,0);      // GREEN
   $color3 = imagecolorallocate($img,0,0,255);      // BLUE
   $color4 = imagecolorallocate($img,0,0,0);        // BLACK
   $color5 = imagecolorallocate($img,255,255,255);  // WHITE
+  */
+
+  // for missing file
+  $warn_color = imagecolorallocate($img,255,0,0);      // RED
 
   /***** Transparency settings *****/
   // if using a transparent color set it here. the RGB value should match the
@@ -255,18 +318,22 @@ function define_colors() {
 // using a parameter put '' in its place.
 
 /*****************************************************************************/
-/***** write_default: This function writes your values onto the default  *****/
-/*****                150X150 image                                      *****/
+/*write_default: This function writes your values to the default 150X150 img */
+/*    imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);     */
 /*****************************************************************************/
+
 function write_default() {
   // let's start by defining some global variables that will be passed between
   // functions. This is kind of clunky!
   // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
-  global $color1, $color2, $color3, $color4, $color5, $date, $t_ime, $temp,
-         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units,
-         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
-         $heat_index_threshold, $windchill, $wind_chill_threshold, 
+
+  global $title_color, $text_color, $date_color, $temp_color, $rain_color,
+         $heat_color, $chill_color,$wind_color, $gust_color, $barom_color,
+         $date, $t_ime, $temp, $degree_units, $winds, $wind_units, $gust,
+         $raintoday, $rain_units, $barom, $barom_units, $baromtrendwords,
+         $heatindex, $heat_index_threshold, $windchill, $wind_chill_threshold,
          $banner_icon_x, $banner_icon_y, $anti_alias;
+
 
   // this section does the heat index and wind chill
   // it figures out what to show, wind chill, heatindex or nothing
@@ -275,45 +342,48 @@ function write_default() {
   // if windchill is <= $wind_chill_threshold we'll output it
   case ($windchill <= $wind_chill_threshold):
        $feelslike = "$gettext("Wind Chill:") $windchill$degree_units";
-       imagecenteredtext(75, 62, "$feelslike", 2, 7, $color3, 0);
+       imagecenteredtext(75, 62, "$feelslike", 2, 7, $chill_color, 0);
   break;
   // if heat index >= $heat_index_threshold we'll output it
   case ($heatindex >= $heat_index_threshold):
        $feelslike = "$gettext("Heat Idx:") $heatindex$degree_units";
-       imagecenteredtext(75, 62, "$feelslike", 2, 7, $color1, 0);
+       imagecenteredtext(75, 62, "$feelslike", 2, 7, $heat_color, 0);
   break;
   } // end switch
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
   // imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);
-  imagecenteredtext(90, 12, "$title_here", 3, 10, $color2, 0);
-  imagecenteredtext(90, 25, "Current Weather", 3, 10, $color2, 0);
-  imagecenteredtext(75, 35, "$date @ $t_ime", 1, 7, $color2, 0);
-  //imagecenteredtext(75, 54, "$temp$degree_units", 5, 18, $color4, 0);
-  imagecenteredtext(75, 49, "$temp$degree_units", 5, 18, $color4, 0);
-  imagecenteredtext(75, 78, "$gettext("Rain:") $raintoday$rain_units", 5, 12, $color3, 0);
-  imagecenteredtext(75, 96, "$gettext("Wind:")$winds", 5, 10, $color4, 0);
-  imagecenteredtext(75, 108, "$gettext("Gust:") $gust$wind_units", 2, 7, $color4, 0);
-  imagecenteredtext(75, 120, "$barom$barom_units", 2, 7, $color4, 0);
-  imagecenteredtext(75, 130, "$baromtrendwords", 1, 7, $color4, 0);
-  imagecenteredtext(75, 145, "$add_text", 2, 7, $color1, 0);
+  imagecenteredtext(90, 12, "$title_here", 3, 10, $title_color, 0);
+  imagecenteredtext(90, 25, "Current Weather", 3, 10, $text_color, 0);
+  imagecenteredtext(75, 35, "$date @ $t_ime", 1, 7, $date_color, 0);
+  imagecenteredtext(75, 49, "$temp$degree_units", 5, 18, $temp_color, 0);
+  imagecenteredtext(75, 78, "$gettext("Rain:") $raintoday$rain_units", 5, 12, $rain_color, 0);
+  imagecenteredtext(75, 96, "$gettext("Wind:")$winds", 5, 10, $wind_color, 0);
+  imagecenteredtext(75, 108, "$gettext("Gust:") $gust$wind_units", 2, 7, $gust_color, 0);
+  imagecenteredtext(75, 120, "$barom$barom_units", 2, 7, $barom_color, 0);
+  imagecenteredtext(75, 130, "$baromtrendwords", 1, 7, $barom_color, 0);
+  imagecenteredtext(75, 145, "$add_text", 2, 7, $text_color, 0);
 
 } /***** end function write_default *****/
 
 /******************************************************************************/
-/*** write_banner: This function writes your values onto the 468X60 banner. ***/
+/*   write_banner: This function writes your values onto the 468X60 banner.   */
+/*    imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);      */
 /******************************************************************************/
 function write_banner() {
 
   // let's start by defining some global variables that will be passed between
   // functions. This is kind of clunky!
   // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
-  global $color1, $color2, $color3, $color4, $color5, $date, $t_ime, $temp,
-         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units,
-         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
-         $heat_index_threshold, $windchill, $wind_chill_threshold,
-         $banner_icon_x, $banner_icon_y, $anti_alias;
+
+  global $title_color, $text_color, $date_color, $temp_color, $rain_color,
+         $heat_color, $chill_color, $wind_color, $gust_color, $barom_color,
+         $date, $t_ime, $temp, $degree_units, $winds, $wind_units, $gust,
+         $raintoday, $rain_units, $barom, $barom_units, $baromtrendwords,
+         $dewpt, $humidity, $heatindex, $heat_index_threshold, $windchill,
+         $wind_chill_threshold, $banner_icon_x, $banner_icon_y, $anti_alias;
+
 
   // this section does the heat index and wind chill
   // it figures out what to show, wind chill, heatindex or nothing
@@ -322,27 +392,27 @@ function write_banner() {
   // if windchill is <= $wind_chill_threshold we'll output it
   case ($windchill <= $wind_chill_threshold):
        $feelslike = "$gettext("Wind Chill:") $windchill$degree_units";
-       imagecenteredtext(70, 38, "$feelslike", 2, 7, $color3, 0);
-  break; 
+       imagecenteredtext(70, 38, "$feelslike", 2, 7, $chill_color, 0);
+  break;
   // if heat index >= $heat_index_threshold we'll output it
   case ($heatindex >= $heat_index_threshold):
        $feelslike = "$gettext("Heat Idx:") $heatindex$degree_units";
-       imagecenteredtext(70, 38, "$feelslike", 2, 7, $color1, 0);
+       imagecenteredtext(70, 38, "$feelslike", 2, 7, $heat_color, 0);
   break;
   } // end switch
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
-  imagecenteredtext(90, 12, "$title_here", 5, 10, $color2, 0);
-  imagecenteredtext(422, 10, "", 2, 7, $color1, 0);
-  imagecenteredtext(234, 24, "$date @ $t_ime", 1, 7, $color2, 0);
-  imagecenteredtext(70, 25, "$gettext("Temp:") $temp$degree_units", 5, 11, $color4, 0);
-  imagecenteredtext(70, 50, "$gettext("Humidity:") $humidity%", 5, 9, $color4, 0);
-  imagecenteredtext(234, 36, "$gettext("Wind:") $winds", 5, 11, $color4, 0);
-  imagecenteredtext(234, 48, "$gettext("Gust:") $gust$wind_units", 2, 7, $color4, 0);
-  imagecenteredtext(400, 25, "$gettext("Rain:") $raintoday$rain_units", 5, 11, $color3, 0);
-  imagecenteredtext(400, 38, "$gettext("Dew Pt:") $dewpt$degree_units", 5, 9, $color4, 0);
-  imagecenteredtext(390, 50, "$barom$barom_units $baromtrendwords", 2, 7, $color4, 0);
+  imagecenteredtext(90, 12, "$title_here", 5, 10, $title_color, 0);
+  imagecenteredtext(422, 10, "$add_text", 2, 7, $text_color, 0);
+  imagecenteredtext(234, 24, "$date @ $t_ime", 1, 7, $date_color, 0);
+  imagecenteredtext(70, 25, "$gettext("Temp:") $temp$degree_units", 5, 11, $temp_color, 0);
+  imagecenteredtext(70, 50, "$gettext("Humidity:") $humidity%", 5, 9, $hum_color, 0);
+  imagecenteredtext(234, 36, "$gettext("Wind:") $winds", 5, 11, $wind_color, 0);
+  imagecenteredtext(234, 48, "$gettext("Gust:") $gust$wind_units", 2, 7, $gust_color, 0);
+  imagecenteredtext(400, 25, "$gettext("Rain:") $raintoday$rain_units", 5, 11, $rain_color, 0);
+  imagecenteredtext(400, 38, "$gettext("Dew Pt:") $dewpt$degree_units", 5, 9, $dew_color, 0);
+  imagecenteredtext(390, 50, "$barom$barom_units $baromtrendwords", 2, 7, $barom_color, 0);
 
 } // end function write_banner
 
@@ -355,9 +425,12 @@ function write_banner_big() {
   // let's start by defining some global variables that will be passed between
   // functions. This is kind of clunky!
   // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
-  global $color1, $color2, $color3, $color4, $color5, $date, $t_ime, $temp,
-         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units,
-         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
+
+  global $title_color, $text_color, $temp_color, $date_color, $rain_color,
+         $heat_color, $chill_color, $wind_color, $dew_color, $hum_color,
+         $gust_color, $barom_color, $date, $t_ime, $temp, $degree_units,
+         $winds, $wind_units, $gust, $raintoday, $rain_units, $barom,
+         $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
          $heat_index_threshold, $windchill, $wind_chill_threshold,
          $banner_icon_x, $banner_icon_y, $anti_alias;
 
@@ -368,27 +441,27 @@ function write_banner_big() {
   // if windchill is <= $wind_chill_threshold we'll output it
   case ($windchill <= $wind_chill_threshold):
        $feelslike = "$gettext("Wind Chill:") $windchill$degree_units";
-       imagecenteredtext(90, 50, "$feelslike", 2, 8, $color3, 0);
-  break; 
+       imagecenteredtext(90, 50, "$feelslike", 2, 8, $chill_color, 0);
+  break;
   // if heat index >= $heat_index_threshold we'll output it
   case ($heatindex >= $heat_index_threshold):
        $feelslike = "$gettext("Heat Idx:") $heatindex$degree_units";
-       imagecenteredtext(90, 50, "$feelslike", 2, 8, $color1, 0);
+       imagecenteredtext(90, 50, "$feelslike", 2, 8, $heat_color, 0);
   break;
   } // end switch
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
-  imagecenteredtext(250, 15, "$title_here", 5, 14, $color2, 0);
-  imagecenteredtext(456, 10, "$add_text", 2, 7, $color1, 0);
-  imagecenteredtext(250, 35, "$date @ $t_ime", 2, 8, $color2, 0);
-  imagecenteredtext(90, 38, "$gettext("Temp:") $temp$degree_units", 5, 14, $color4, 0);
-  imagecenteredtext(90, 65, "$gettext("Humidity:") $humidity%", 5, 11, $color4, 0);
-  imagecenteredtext(250, 53, "$gettext("Wind:") $winds", 5, 11, $color4, 0);
-  imagecenteredtext(250, 67, "$gettext("Gust:") $gust$wind_units", 2, 8, $color4, 0);
-  imagecenteredtext(410, 36, "$gettext("Rain:") $raintoday$rain_units", 5, 14, $color3, 0);
-  imagecenteredtext(410, 51, "$gettext("Dew Pt:") $dewpt$degree_units", 5, 11, $color4, 0);
-  imagecenteredtext(410, 66, "$barom$barom_units $baromtrendwords", 2, 8, $color4, 0);
+  imagecenteredtext(250, 15, "$title_here", 5, 14, $title_color, 0);
+  imagecenteredtext(456, 10, "$add_text", 2, 7, $text_color, 0);
+  imagecenteredtext(250, 35, "$date @ $t_ime", 2, 8, $date_color, 0);
+  imagecenteredtext(90, 38, "$gettext("Temp:") $temp$degree_units", 5, 14, $temp_color, 0);
+  imagecenteredtext(90, 65, "$gettext("Humidity:") $humidity%", 5, 11, $hum_color, 0);
+  imagecenteredtext(250, 53, "$gettext("Wind:") $winds", 5, 11, $wind_color, 0);
+  imagecenteredtext(250, 67, "$gettext("Gust:") $gust$wind_units", 2, 8, $gust_color, 0);
+  imagecenteredtext(410, 36, "$gettext("Rain:") $raintoday$rain_units", 5, 14, $rain_color, 0);
+  imagecenteredtext(410, 51, "$gettext("Dew Pt:") $dewpt$degree_units", 5, 11, $dew_color, 0);
+  imagecenteredtext(410, 66, "$barom$barom_units $baromtrendwords", 2, 8, $barom_color, 0);
 
 } /***** end function write_banner_big *****/
 
@@ -401,9 +474,12 @@ function write_custom() {
   // let's start by defining some global variables that will be passed between
   // functions. This is kind of clunky!
   // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
-  global $color1, $color2, $color3, $color4, $color5, $date, $t_ime, $temp,
-         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units,
-         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
+
+  global $title_color, $text_color, $temp_color, $date_color, $rain_color,
+         $heat_color, $chill_color, $wind_color, $dew_color, $hum_color,
+         $gust_color, $barom_color, $date, $t_ime, $temp, $degree_units,
+         $winds, $wind_units, $gust, $raintoday, $rain_units, $barom,
+         $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
          $heat_index_threshold, $windchill, $wind_chill_threshold,
          $banner_icon_x, $banner_icon_y, $anti_alias;
 
@@ -414,44 +490,45 @@ function write_custom() {
   // if windchill is <= $wind_chill_threshold we'll output it
   case ($windchill <= $wind_chill_threshold):
        $feelslike = "$gettext("Wind Chill:") $windchill$degree_units";
-       imagecenteredtext(90, 52, "$feelslike", 2, 8, $color3, 0);
+       imagecenteredtext(90, 50, "$feelslike", $fgd_heat, $ftt_heat, $chill_color, 0);
   break;
   // if heat index >= $heat_index_threshold we'll output it
   case ($heatindex >= $heat_index_threshold):
        $feelslike = "$gettext("Heat Idx:") $heatindex$degree_units";
-       imagecenteredtext(90, 52, "$feelslike", 2, 8, $color1, 0);
+       imagecenteredtext(90, 50, "$feelslike", $fgd_chill, $ftt_chill, $heat_color, 0);
   break;
   } // end switch
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
-  imagecenteredtext(250, 17, "$title_here", 5, 14, $color2, 0);
-  imagecenteredtext(455, 10, "$add_text", 2, 7, $color1, 0);
-  imagecenteredtext(250, 35, "$date @ $t_ime", 2, 8, $color3, 0);
-  imagecenteredtext(90, 36, "$gettext("Temp:") $temp$degree_units", 5, 14, $color4, 0);
-  imagecenteredtext(90, 68, "$gettext("Humidity:") $humidity%", 5, 11, $color4, 0);
-  imagecenteredtext(250, 53, "$gettext("Wind:") $winds", 5, 11, $color4, 0);
-  imagecenteredtext(250, 67, "$gettext("Gust:") $gust$wind_units", 2, 8, $color4, 0);
-  imagecenteredtext(400, 36, "$gettext("Rain:") $raintoday$rain_units", 5, 14, $color3, 0);
-  //imagecenteredtext(400, 36, "$gettext("Rain:") $raintoday$rain_units", 5, 14, $color3, 0);
-  imagecenteredtext(400, 52, "$gettext("Dew Pt:") $dewpt$degree_units", 5, 11, $color4, 0);
-  imagecenteredtext(400, 66, "$barom$barom_units $baromtrendwords", 2, 8, $color4, 0);
+  imagecenteredtext(250, 17, "$title_here", $fgd_title, $ftt_title, $title_color, 0);
+  imagecenteredtext(455, 10, "$add_text", $fgd_text, $ftt_text, $text_color, 0);
+  imagecenteredtext(250, 35, "$date @ $t_ime", $fgd_date, $ftt_date, $date_color, 0);
+  imagecenteredtext(90, 36, "$gettext("Temp:") $temp$degree_units", $fgd_temp, $ftt_temp, $temp_color, 0);
+  imagecenteredtext(90, 68, "$gettext("Humidity:") $humidity%", $fgd_hum, $ftt_hum, $hum_color, 0);
+  imagecenteredtext(250, 53, "$gettext("Wind:") $winds", $fgd_wind, $ftt_wind, $wind_color, 0);
+  imagecenteredtext(250, 67, "$gettext("Gust:") $gust$wind_units", $fgd_gust, $ftt_gust, $gust_color, 0);
+  imagecenteredtext(400, 36, "$gettext("Rain:") $raintoday$rain_units", $fgd_rain, $ftt_rain, $rain_color, 0);
+  imagecenteredtext(400, 51, "$gettext("Dew Pt:") $dewpt$degree_units", $fgd_dew, $ftt_dew, $dew_color, 0);
+  imagecenteredtext(400, 66, "$barom$barom_units $baromtrendwords", $fgd_barom, $ftt_barom, $barom_color, 0);
+
 
 } /***** end function write_custom *****/
 
 /*****************************************************************************/
-/***** write_avatar: This function writes your values onto the avatar.   *****/
-/*****                100X100 image                                      *****/
+/*write_avatar: This function writes your values to the avatar 100X100 image */
+/*  imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle);       */
 /*****************************************************************************/
 function write_avatar() {
   // let's start by defining some global variables that will be passed between
   // functions. This is kind of clunky!
   // NOTE: IF YOU ADD ADDITIONAL COLORS YOU'LL NEED TO ADD THEM HERE TOO!
-  global $color1, $color2, $color3, $color4, $color5, $date, $t_ime, $temp,
-         $degree_units, $winds, $wind_units, $gust, $raintoday, $rain_units,
-         $barom, $barom_units, $baromtrendwords, $dewpt, $humidity, $heatindex,
-         $heat_index_threshold, $windchill, $wind_chill_threshold,
-         $banner_icon_x, $banner_icon_y, $anti_alias;
+
+  global $title_color, $text_color, $date_color, $temp_color, $rain_color,
+         $heat_color, $chill_color, $wind_color, $barom_color, $date, $t_ime,
+         $temp, $degree_units, $winds, $raintoday, $rain_units, $barom,
+         $barom_units, $heatindex, $heat_index_threshold, $windchill,
+         $wind_chill_threshold, $banner_icon_x, $banner_icon_y, $anti_alias;
 
   // this section does the heat index and wind chill
   // it figures out what to show, wind chill, heatindex or nothing
@@ -460,24 +537,24 @@ function write_avatar() {
   // if windchill is <= $wind_chill_threshold we'll output it
   case ($windchill <= $wind_chill_threshold):
        $feelslike = "$gettext("WindCh:") $windchill$degree_units";
-       imagecenteredtext(50, 50, "$feelslike", 1, 7, $color3, 0);
+       imagecenteredtext(50, 50, "$feelslike", 1, 7, $chill_color, 0);
   break;
   // if heat index >= $heat_index_threshold we'll output it
   case ($heatindex >= $heat_index_threshold):
        $feelslike = "$gettext("HeatIdx:") $heatindex$degree_units";
-       imagecenteredtext(50, 50, "$feelslike", 1, 7, $color1, 0);
+       imagecenteredtext(50, 50, "$feelslike", 1, 7, $heat_color, 0);
   break;
   } // end switch
 
   // this section controls what is written to the image, where it is written.
   // see the explanation above for details on what each parameter represents
-  imagecenteredtext(55, 10, "$title_here", 2, 8, $color2, 0);
-  imagecenteredtext(55, 20, "Curr Wx", 2, 8, $color2, 0);
-  imagecenteredtext(50, 40, "$temp$degree_units", 5, 14, $color4, 0);
-  imagecenteredtext(50, 60, "$gettext("Rain:") $raintoday$rain_units", 3, 9, $color3, 0);
-  imagecenteredtext(50, 72, "$winds", 3, 9, $color4, 0);
-  imagecenteredtext(50, 82, "$barom$barom_units", 1, 8, $color4, 0);
-  imagecenteredtext(50, 96, "$date $t_ime", 1, 7, $color2, 0);
+  imagecenteredtext(55, 10, "$title_here", 2, 8, $title_color, 0);
+  imagecenteredtext(55, 20, "Curr Wx", 2, 8, $text_color, 0);
+  imagecenteredtext(50, 40, "$temp$degree_units", 5, 14, $temp_color, 0);
+  imagecenteredtext(50, 60, "$gettext("Rain:") $raintoday$rain_units", 3, 9, $rain_color, 0);
+  imagecenteredtext(50, 72, "$winds", 3, 9, $wind_color, 0);
+  imagecenteredtext(50, 82, "$barom$barom_units", 1, 8, $barom_color, 0);
+  imagecenteredtext(50, 96, "$date $t_ime", 1, 7, $date_color, 0);
 
 } /***** end function write_avatar *****/
 

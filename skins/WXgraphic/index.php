@@ -2,7 +2,7 @@
 // ini_set('display_errors',1);
 /******************************************************************************
 * was wxgraphic.php v6.5
-* index.php _version = v0.6.7
+* index.php _version = v0.6.8
 # renamed as index.php for weewx installation - Glenn McKechnie, Sept 2022
 *
 * Weather graphic generator
@@ -318,6 +318,7 @@ else {
      # then ' ' but us AMPM format is '00:00:00 AM'
      # so try a ';'  -- 3rd times the charm?
      $data = explode("$de_limiter", $dataraw);
+     if (empty($data[1])){nodataimage("Invalid data file, check format",$data[0]);}
      // clean up and define the data points
      $t_ime = trim($data[0]);
      $date = trim($data[1]);
@@ -361,10 +362,10 @@ else {
 
      // CURRENT CONDITIONS ICONS FOR VWS
      // create array for icons.
-     // It would be simpler to do this with array() but to make it easier to 
-     // modify each element is defined individually. Each index ["SOME VALUE"] 
+     // It would be simpler to do this with array() but to make it easier to
+     // modify each element is defined individually. Each index ["SOME VALUE"]
      // corresponds to a possible value of the ^climate_cconds1^ tag. Because
-     // VWS does not provide a day/night tag, we figure that out immediately 
+     // VWS does not provide a day/night tag, we figure that out immediately
      // above and then use the $daynight value in the image definitions below
      // to select the right icon.
      $vws_icon["BLIZZARD CONDITION"] = "./icons/" . "$daynight" . "_snow.$image_format";
@@ -383,24 +384,24 @@ else {
      $vws_icon["SCATTERED CLOUDS"] = "./icons/" . "$daynight" . "_partly_cloudy.$image_format";
      $vws_icon["BLOWING SNOW"] = "./icons/" . "$daynight" . "_snow.$image_format";
      $vws_icon["DRIFTING SNOW"] = "./icons/" . "$daynight" . "_snow.$image_format";
-     //$vws_icon["RAIN+SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["SNOW+FREEZING RAIN"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["SNOW+RAIN"] = " /icons/$daynight_snow.$image_format";
-     //$vws_icon["RAIN+SNOW+SHOWERS"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["FREEZING RAIN AND SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["RAIN AND SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["SNOW AND RAIN"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["CHANCE OF RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["FREEZING RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["RAIN OR SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["RAIN+MIXED+SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["SNOW+MIXED+RAIN"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["MIXPCPN"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["SLEET+AND+SNOW"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["SLEET"] = "/icons/$daynight_sleet.$image_format";
-     //$vws_icon["WINTRY MIX"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["CHANCE OF SNOW OR RAIN"] = "/icons/$daynight_snow.$image_format";
-     //$vws_icon["SNOW OR RAIN"] = "/icons/$daynight_snow.$image_format";
+     $vws_icon["RAIN+SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["SNOW+FREEZING RAIN"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["SNOW+RAIN"] = " /icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["RAIN+SNOW+SHOWERS"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["FREEZING RAIN AND SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["RAIN AND SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["SNOW AND RAIN"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["CHANCE OF RAIN OR SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["FREEZING RAIN OR SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["RAIN OR SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["RAIN+MIXED+SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["SNOW+MIXED+RAIN"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["MIXPCPN"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["SLEET+AND+SNOW"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["SLEET"] = "./icons" . "$daynight" . "_sleet.$image_format";
+     $vws_icon["WINTRY MIX"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["CHANCE OF SNOW OR RAIN"] = "./icons" . "$daynight" . "_snow.$image_format";
+     $vws_icon["SNOW OR RAIN"] = "./icons" . "$daynight" . "_snow.$image_format";
      $vws_icon["PARTLY|MOSTLY+CLOUDY|SUNNY+THUNDERSTORM"] = "./icons/" . "$daynight" . "_tstorm.$image_format";
      $vws_icon["CHANCE OF+THUNDERSTORM"] = "./icons/" . "$daynight" . "_tstorm.$image_format";
      $vws_icon["THUNDERSTORM"] = "./icons/" . "$daynight" . "_tstorm.$image_format";
@@ -445,7 +446,7 @@ else {
      $vws_icon["DRIZZLE"] = "./icons/" . "$daynight" . "_light_rain.$image_format";
      $vws_icon["MIST"] = "./icons/haze.$image_format";
      $vws_icon["SMOKE"] = "./icons/haze.$image_format";
-     //$vws_icon["FROZEN PRECIP"] = "/icons/$daynight_snow.$image_format";
+     $vws_icon["FROZEN PRECIP"] = "./icons" . "$daynight" . "_snow.$image_format";
      $vws_icon["DRY"] = "./icons/" . "$daynight" . "_clear.$image_format";
      $vws_icon["VARIABLE HIGH CLOUDINESS"] = "./icons/" . "$daynight" . "_partly_cloudy.$image_format";
      $vws_icon["PARTLY CLOUDY"] = "./icons/" . "$daynight" . "_partly_cloudy.$image_format";
@@ -503,13 +504,13 @@ switch (TRUE) {
 if ($curr_cond_icon == 'yes') {
    if ($use_wd_clientraw == '1') {
       switch (TRUE) {
-        case ($image_format == 'gif') : 
+        case ($image_format == 'gif') :
              $ccicon = imagecreatefromgif($icon_array[$data[48]]);
         break;
         case ($image_format == 'png') :
              $ccicon = imagecreatefrompng($icon_array[$data[48]]);
         break;
-        case ($image_format == 'jpeg') : 
+        case ($image_format == 'jpeg') :
              $ccicon = imagecreatefromjpeg($icon_array[$data[48]]);
         break;
       } // end switch
@@ -532,13 +533,13 @@ if ($curr_cond_icon == 'yes') {
       } // end if
       if (empty($ccicon)) {
          switch (TRUE) {
-           case ($image_format == 'gif') : 
+           case ($image_format == 'gif') :
                 $ccicon = imagecreatefromgif($default_icon);
            break;
            case ($image_format == 'png') :
                 $ccicon = imagecreatefrompng($default_icon);
            break;
-           case ($image_format == 'jpeg') : 
+           case ($image_format == 'jpeg') :
                 $ccicon = imagecreatefromjpeg($default_icon);
            break;
          } // end switch
@@ -594,7 +595,7 @@ switch (TRUE){
   break;
   case ($image_type == "custom"): // new type; can resize to suit the user
        if (isset($icon)) {
-          imagecopyresampled($img, $icon, $avatar_icon_x, $avatar_icon_y, 0, 0, 25, 25, 25, 25);
+          imagecopyresampled($img, $icon, $custom_icon_x, $custom_icon_y, 0, 0, 25, 25, 25, 25);
       } // end if
        // write the text onto the (custom) 500X80 banner
        write_custom();
@@ -714,7 +715,7 @@ function create_base_image() {
 // no_data_text1: top line of text
 // no_data_text2: bottom line of text
 function nodataimage ($no_data_text1, $no_data_text2) {
-  global $baseimg, $font_file, $image_format, $img, $image_type, $color1, $color2, $color3, $color4, $color5;
+  global $baseimg, $font_file, $image_format, $img, $image_type, $warn_color;
 
   // create the base image
   create_base_image();
@@ -734,18 +735,20 @@ function nodataimage ($no_data_text1, $no_data_text2) {
   //imagecenteredtext($x, $y, $text, $size, $ttfsize, $color, $angle)
   switch (TRUE) {
     case (empty($image_type) or ($image_type == "default")):
-        imagecenteredtext(75, 65, "$no_data_text1", 5, 12, $color1, 0);
-        imagecenteredtext(75, 85, "$no_data_text2", 5, 12, $color1, 0);
+        imagecenteredtext(75, 65, "$no_data_text1", 5, 12, $warn_color, 0);
+        imagecenteredtext(75, 85, "$no_data_text2", 5, 12, $warn_color, 0);
     break;
     case ($image_type == "avatar"):
-        imagecenteredtext(50, 45, "$no_data_text1", 3, 10, $color1, 0);
-        imagecenteredtext(50, 65, "$no_data_text2", 3, 10, $color1, 0);
+        imagecenteredtext(50, 45, "$no_data_text1", 3, 10, $warn_color, 0);
+        imagecenteredtext(50, 65, "$no_data_text2", 3, 10, $warn_color, 0);
     break;
     case ($image_type == "banner"):
-         imagecenteredtext(234, 35, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0);
+         imagecenteredtext(234, 25, "$no_data_text1", 5, 12, $warn_color, 0);
+         imagecenteredtext(234, 55, "$no_data_text2", 5, 12, $warn_color, 0);
     break;
     case (($image_type == "banner_big") or ($image_type == "custom")):
-         imagecenteredtext(250, 45, "$no_data_text1 $no_data_text2", 5, 12, $color1, 0);
+         imagecenteredtext(250, 25, "$no_data_text1", 5, 12, $warn_color, 0);
+         imagecenteredtext(250, 55, "$no_data_text2", 5, 12, $warn_color, 0);
     break;
   } // end switch
 
