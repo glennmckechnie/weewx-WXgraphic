@@ -1,5 +1,18 @@
 ![custom.png](skins/WXgraphic/examples/MessmateFarmCustom.png)
 
+**13th Oct 2022**
+
+Package up main as [Fixes: Numerous](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.7)
+See release notes and v0.6.7 comments below
+
+(Pending for v0.6.8:
+
+The next release, and current main v0.6.8 will offer, via skin.conf; Colors to all images, fonts to the custom image.
+
+A bash script to modify the templates (instead of a separate no-lang file)
+
+Use nodataimage() for invalid data (besides missing)
+
 **9th Oct 2022**
 v0.6.7
 
