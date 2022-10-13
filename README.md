@@ -9,7 +9,7 @@ See release notes and v0.6.7 comments below
 
 The next release, and current main v0.6.8 will offer, via skin.conf; Colors to all images, fonts to the custom image.
 
-A bash script to modify the templates (instead of a separate no-lang file)
+A bash script - remove-gettext.sh - to modify the templates (instead of the single, out of date, config.txt.tmpl.no-lang file)
 
 Use nodataimage() for invalid data (besides missing)
 
