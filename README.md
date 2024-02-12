@@ -1,5 +1,9 @@
 ![custom.png](skins/WXgraphic/examples/MessmateFarmCustom.png)
 
+**12 Feb 2024**
+
+Update notes for weewx 5.x versions
+
 **13th Oct 2022**
 
 Package up main as [Fixes: Numerous](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.7)
@@ -116,10 +120,16 @@ Edits to config.txt.tmpl will propagate to the webserver on each report cycle wh
       ```wget -O weewx-WXgraphic-main.zip https://github.com/glennmckechnie/weewx-WXgraphic/archive/refs/heads/main.zip```
 
    2. Use wee_extension to install it
-   
+   3. 
+      For weewx 5.x...
+      
+      ```sudo weectl extension install=weewx-WXgraphic-main.zip```
+      
+      or the older 4,x versions use...
+      
       ```sudo wee_extension --install=weewx-WXgraphic-main.zip```
 
-   3. Restart weewx
+   5. Restart weewx
 
       ```sudo /etc/init.d/weewx stop```
 
@@ -229,7 +239,13 @@ After installation there will be a directory created on your webserver named wxg
 
 A default installation (no changes to skin.conf) requires default.png, index.php, PHP_verify.php, config.txt, and DATA/wxgraphic_weewx.txt to be correct and available in your webservers weewx/wxgraphics directory. If you have a version (v0.6.5) with languages, then lang/ as well
 
-The PHP_verify.php file is used to test your webservers php installation. When accessed by your browser it should give you an indication whether you have php and GD enabled. If it returns just garbage text (its contents are php code) then php is not installed and you need to install php and php-gd.
+The PHP_verify.php file is used to test your webservers php installation. When accessed by your browser it should give you an indication whether you have php and GD enabled. If it returns just garbage text (its contents are php code) then php is not installed and you need to install php and php-gd. For example, on Debian Bookworm...
+
+To install php...
+<pre>apt install php8.2</pre>
+and then to install the required php-GD...
+<pre>apt install php8.2-gd</pre>
+
 The PHP_verify.php file can be removed from the skin (and www/html/weewx/wxgraphic) directories once it has been used. It serves an important task, but only once (remove it from the skins/WXgraphic directory as well.
 
 When that is successful we need to check that the 2 files we generate from the templates - config.txt and DATA/wxgraphic_weewx.txt are correct.
