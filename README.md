@@ -119,8 +119,8 @@ Edits to config.txt.tmpl will propagate to the webserver on each report cycle wh
    
       ```wget -O weewx-WXgraphic-main.zip https://github.com/glennmckechnie/weewx-WXgraphic/archive/refs/heads/main.zip```
 
-   2. Use wee_extension to install it
-   3. 
+   2. Use the appropriate weewx command to install it
+    
       For weewx 5.x...
       
       ```sudo weectl extension install weewx-WXgraphic-main.zip```
@@ -129,12 +129,18 @@ Edits to config.txt.tmpl will propagate to the webserver on each report cycle wh
       
       ```sudo wee_extension --install=weewx-WXgraphic-main.zip```
 
-   5. Restart weewx
+   3. Restart weewx
 
       ```sudo /etc/init.d/weewx stop```
 
       ```sudo /etc/init.d/weewx start```
 
+      or
+ 
+      ```sudo systemctl stop weewx```
+
+      ```sudo systemctl start weewx```
+     
 This will install a skin named WXgraphic under the skins directory and will also enable it in weewx.conf
 
    4. Configure your webserver.
