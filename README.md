@@ -123,7 +123,7 @@ Edits to config.txt.tmpl will propagate to the webserver on each report cycle wh
    3. 
       For weewx 5.x...
       
-      ```sudo weectl extension install=weewx-WXgraphic-main.zip```
+      ```sudo weectl extension install weewx-WXgraphic-main.zip```
       
       or the older 4,x versions use...
       
