@@ -50,7 +50,7 @@ except ImportError:
 
 if weewx.__version__ < "4.6.0":
     loginf("Languages: weewx 4.6.0 is required, found %s" % weewx.__version__)
-    loginf(" modified config.txt.tmpl required - see notes")
+    loginf(" modify config.txt.tmpl using ./remove-gettext.sh - see notes")
 
 """
 add to weewx.conf if debug output is required

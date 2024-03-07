@@ -1,58 +1,9 @@
 ![custom.png](skins/WXgraphic/examples/MessmateFarmCustom.png)
 
-**12 Feb 2024**
+**3 Mar 2024**
 
 Update notes for weewx 5.x versions
-
-**13th Oct 2022**
-
-Package up main as [Fixes: Numerous](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.7)
-See release notes and v0.6.7 comments below
-
-(Pending for v0.6.8:
-
-The next release, and current main v0.6.8 will offer, via skin.conf; Colors to all images, fonts to the custom image.
-
-A bash script - remove-gettext.sh - to modify the templates (instead of the single, out of date, config.txt.tmpl.no-lang file)
-
-Use nodataimage() for invalid data (besides missing)
-
-**9th Oct 2022**
-v0.6.7
-
-If you have weewx version 4.6.0 or greater then the languages feature (lang) will work for you.
-If you have a version older than that you will need to use config.txt.tmpl.no_lang, after you rename then replace the existing config.txt.tmpl
-
-If you haven't installed the optional [extended almanac](https://weewx.com/docs/customizing.htm#Almanac) for WeeWX, you won't get sunrise nor sunset data. That means the day/night icon cannot be calculated, no matter how you set the skin.conf variable curr_cond_icon.
-The script now ignores that fatal error and displays an image without the added icons.
-
-**8th Oct 2022**
-v0.6.7
-
-It seems I made a poor choice changing the delimiter in wxgraphic-weewx.txt to a space. That doesn't play well with the AM PM time formats.
-
-Changed it to a semi-colon ';' **with** the option in WXgraphic/skin.conf to change it again - to one of your choosing.
-
-Third times the charm?  !
-
-**3rd Oct 2022**
-
-
-Internationalization: language configuration using WeeWX lang files. See the skins/WXgraphic/lang directory for templates.
-
-And thanks to Hartmut we have a German language file - de.conf
-
-For our other languages, use the spare language file en.conf.x as a template and rename, rework its contents accordingly. If you do one for yourself, it would be appreciated if you sent a copy to upload here.
-
-When using clientraw.txt files, there was a php based conversion process that could be configured to do the job. It has been commented out as we (WeeWX users) don't require it. WeeWX will pass units, groups and do the conversion using its own routines.
-
-Released as [International: language, using WeeWX lang files](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.6)
-
-When using clientraw.txt files, there was a php based unit conversion process that could be configured. It has been commented out as we (WeeWX users) don't require it. WeeWX will pass units, groups using its own routines.
-
-On a minor note, I've added the original source files (wxgraphic-XXX_6.3.zip) to the repo.
-
-See changelog for older notices
+Clarify some steps.
 
 ## What is wxgraphic?
 
@@ -97,19 +48,25 @@ Otherwise this simple weewx skin will create a template that generates a suitabl
 Currently, the full range of icons are not used by this template. That appears to be dependent on a true VDS or a clientraw.txt file. We do get a day, night graphic though!
 It could possibly work with a weewx-forecast installation? But I don't have one configured to try it.
 
-php is unforgiving with errors. Most times it's a blank screen if you fubar something. apache2/error.log can give you a hint. Being ultra careful with editing the php file is the safest option, and backups.
+Within the index.php & config.txt scripts there is an option that offers a 'write_custom' - 'custom' configuration. Use that if you really want to go hard at the modifications, and still retain the original banners, avatars etc.
+
+Any of the images can be replaced with an image of your choosing. The WeeWX installation uses the *.png type files by default. 
+
+Replace the image in both the skin directory and on the webserver. The skin copy will overwrite the webservers copy when weewx is restarted. You must replace both im ages if you want your changes to persist.
+
+Edits to config.txt.tmpl will propagate to the webserver on each report cycle when those edits will be used by index.php. Rinse, repeat. (After making backups)
+
+## PHP ##
+
+Besides a webserver to run this code on, that webserver needs to be able to interpret php code. Apache2, lighttpd, nginx can all do this, but you may need to configure them to do so. See step 4 below for more info.
+
+php can seem to be unforgiving with errors. Most times it's a blank screen if you fubar something. apache2/error.log can give you a hint. Being ultra careful with editing the php file is the safest option... and backups.
     
 A display_errors line has been added to the start of index.php. Uncomment it to get some feedback if you go down the manual php configuration path.
     
 ```    
 // ini_set('display_errors',1);
 ```
-
-Within the index.php & config.txt scripts there is an option that offers a 'write_custom' - 'custom' configuration. Use that if you really want to go hard at the modifications, and still retain the original banners, avatars etc.
-
-Any of the images can be replaced with an image of your choosing. The WeeWX installation uses the *.png type files by default.
-
-Edits to config.txt.tmpl will propagate to the webserver on each report cycle when those edits will be used by index.php. Rinse, repeat. (After making backups)
 
 
 ## Install, then configure
@@ -143,12 +100,14 @@ Edits to config.txt.tmpl will propagate to the webserver on each report cycle wh
      
 This will install a skin named WXgraphic under the skins directory and will also enable it in weewx.conf
 
-   4. Configure your webserver.
+   4. Configure your webserver (to interpret php code).
     
-It requires that your webserver runs php, and has access to GD.
-There is a file named PHP_verify.php within the new (www)wxgraphic server directory. Access that from your browser and it should present a html page that will hopefully announce your successful web server setup, if not install php for your webserver, or satisfy its other needs.
+This extension requires that your webserver understands php code, and that it has access to the GD library.
+There is a file named PHP_verify.php within the new (www) wxgraphic webservers directory. Access that from your browser and it should present a html page that will hopefully announce your successful web server setup, if not install php for your webserver, or satisfy its other needs (such as GD).
+If any *.php page displays nothing but text, then the php interpreter is definitely not installed or configured to run, Search the web for how to do this important step. There are plenty of tutorials and hints out there.
 
 When the weewx report cycle runs it will copy the www/wxgraphic directory to your webserver once, and once only. It will be named wxgraphic and will be in your weewx root directory (weewx/wxgraphic) by default.
+It will do this on every restart of weewx too. Make sure you keep your base files (images, fonts etc) in the skin directory. Treat that as your master copy. The working version (copy) is on the webserver.
 
    5. Configure the scripts output
     
@@ -166,7 +125,7 @@ The original script wxgraphic.php has been renamed as index.php. However, this i
 
 ```http://your_weewx_servers_name/weewx/wxgraphic/```
 
-If my server is up and running then the following link should show a live example after you click on it of course. [http://203.213.243.61/weewx/wxgraphic/](http://203.213.243.61/weewx/wxgraphic/). No guarantees it will be up and running though - ISP availability and all that.
+If my server is up and running then the following link should show a live example after you click on it of course. [http://cgm.id.au/weewx/wxgraphic/](http://cgm.id.au/weewx/wxgraphic/). No guarantees it will be up and running though - ISP availability and all that.
 
 Or as embedded html.
 
@@ -175,9 +134,9 @@ Or as embedded html.
 
 
 
-## The next step - editing the php and trialling changes.
+## The next (Optional) step - editing the php and trialling changes.
 
-Everything is working as it should, BUT... You've changed the fonts, don't like the layout, colors, whatever.
+Everything is working as it should, BUT... You want to change the fonts, don't like the layout, colors, whatever.
 
 The fastest and the safest way to make changes to that existing *working* layout is to edit the php files directly.
 
@@ -239,7 +198,7 @@ The following fonts are include in the installation. Some layout co-ordinates (t
 
 ## Troubleshooting
 
-A call from a browser to a link like [http://203.213.243.61/weewx/wxgraphic/](http://203.213.243.61/weewx/wxgraphic/) should show an image. If my server is up and running then that link should show a live example. No guarantees it will be up and running though - ISP availability and all that.
+A call from a browser to a link like [http://cgm.id.au/weewx/wxgraphic/](http://cgm.id.au/weewx/wxgraphic/) should show an image. If my server is up and running then that link should show a live example. No guarantees it will be up and running though - ISP availability and all that.
 
 After installation there will be a directory created on your webserver named wxgraphic (.../weewx/wxgraphic). Directly under that will be 22 (currently) visible files and 4 directories.
 
@@ -271,3 +230,58 @@ returns something that looks like the example above - from the command line (the
 
 Any problems, fixes, suggestions; lang files - raise an [issue](https://github.com/glennmckechnie/weewx-WXgraphic/issues) on github
 
+## History of code changes ##
+
+**12 Feb 2024**
+
+Update notes for weewx 5.x versions
+
+**13th Oct 2022**
+
+Package up main as [Fixes: Numerous](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.7)
+See release notes and v0.6.7 comments below
+
+(Pending for v0.6.8:
+
+The next release, and current main v0.6.8 will offer, via skin.conf; Colors to all images, fonts to the custom image.
+
+A bash script - remove-gettext.sh - to modify the templates (instead of the single, out of date, config.txt.tmpl.no-lang file)
+
+Use nodataimage() for invalid data (besides missing)
+
+**9th Oct 2022**
+v0.6.7
+
+If you have weewx version 4.6.0 or greater then the languages feature (lang) will work for you.
+If you have a version older than that you will need to use config.txt.tmpl.no_lang, after you rename then replace the existing config.txt.tmpl
+
+If you haven't installed the optional [extended almanac](https://weewx.com/docs/customizing.htm#Almanac) for WeeWX, you won't get sunrise nor sunset data. That means the day/night icon cannot be calculated, no matter how you set the skin.conf variable curr_cond_icon.
+The script now ignores that fatal error and displays an image without the added icons.
+
+**8th Oct 2022**
+v0.6.7
+
+It seems I made a poor choice changing the delimiter in wxgraphic-weewx.txt to a space. That doesn't play well with the AM PM time formats.
+
+Changed it to a semi-colon ';' **with** the option in WXgraphic/skin.conf to change it again - to one of your choosing.
+
+Third times the charm?  !
+
+**3rd Oct 2022**
+
+
+Internationalization: language configuration using WeeWX lang files. See the skins/WXgraphic/lang directory for templates.
+
+And thanks to Hartmut we have a German language file - de.conf
+
+For our other languages, use the spare language file en.conf.x as a template and rename, rework its contents accordingly. If you do one for yourself, it would be appreciated if you sent a copy to upload here.
+
+When using clientraw.txt files, there was a php based conversion process that could be configured to do the job. It has been commented out as we (WeeWX users) don't require it. WeeWX will pass units, groups and do the conversion using its own routines.
+
+Released as [International: language, using WeeWX lang files](https://github.com/glennmckechnie/weewx-WXgraphic/releases/tag/v0.6.6)
+
+When using clientraw.txt files, there was a php based unit conversion process that could be configured. It has been commented out as we (WeeWX users) don't require it. WeeWX will pass units, groups using its own routines.
+
+On a minor note, I've added the original source files (wxgraphic-XXX_6.3.zip) to the repo.
+
+See changelog for older notices
